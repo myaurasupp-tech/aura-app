@@ -1,0 +1,13 @@
+{
+  "appId": "com.aura.gamer",
+  "appName": "AURA",
+  "webDir": "www",
+  "bundledWebRuntime": false,
+  "server": {
+    "androidScheme": "https"
+  },
+  "android": {
+    "allowMixedContent": true,
+    "webContentsDebuggingEnabled": false
+  }
+}

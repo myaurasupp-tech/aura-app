@@ -1,0 +1,1851 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover,user-scalable=no">
+<meta name="theme-color" content="#a855f7">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="AURA">
+<title>AURA</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Heebo:wght@300;400;500;700;900&family=Inter:wght@300;400;500;700;900&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#06060a;--line:rgba(255,255,255,.075);--text:#eaeaf2;--muted:#8a8a9e;--p1:#a855f7;--p2:#22d3ee;--grad:linear-gradient(135deg,#a855f7 0%,#22d3ee 100%)}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{height:100%}
+body{font-family:'Heebo','Inter',system-ui,sans-serif;background:var(--bg);color:var(--text);-webkit-font-smoothing:antialiased;min-height:100vh;overflow-x:hidden}
+html[dir="ltr"] body{font-family:'Inter','Heebo',system-ui,sans-serif}
+body::before{content:'';position:fixed;inset:0;z-index:0;pointer-events:none;background:radial-gradient(1000px 600px at 12% -15%,rgba(168,85,247,.22),transparent 60%),radial-gradient(900px 600px at 95% 5%,rgba(34,211,238,.14),transparent 55%),radial-gradient(900px 700px at 50% 120%,rgba(236,72,153,.10),transparent 60%)}
+body::after{content:'';position:fixed;inset:0;z-index:0;pointer-events:none;opacity:.4;background-image:linear-gradient(rgba(255,255,255,.022) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.022) 1px,transparent 1px);background-size:46px 46px;-webkit-mask-image:radial-gradient(circle at 50% 0%,#000,transparent 72%);mask-image:radial-gradient(circle at 50% 0%,#000,transparent 72%)}
+#app{position:relative;z-index:1}
+::-webkit-scrollbar{width:9px;height:9px}::-webkit-scrollbar-track{background:transparent}::-webkit-scrollbar-thumb{background:rgba(255,255,255,.1);border-radius:9px}
+.shell{display:grid;grid-template-columns:252px minmax(0,1fr);min-height:100vh}
+.sidebar{position:sticky;top:0;height:100vh;padding:22px 16px;display:flex;flex-direction:column;gap:24px;border-inline-end:1px solid var(--line);background:rgba(10,10,15,.55);backdrop-filter:blur(16px);z-index:40}
+.brand{display:flex;align-items:center;gap:10px;font-weight:900;font-size:21px;letter-spacing:4px;padding:0 6px}
+.brand .mark{font-size:24px;background:var(--grad);-webkit-background-clip:text;background-clip:text;color:transparent;filter:drop-shadow(0 0 12px rgba(168,85,247,.8))}
+.brand .txt{background:var(--grad);-webkit-background-clip:text;background-clip:text;color:transparent}
+.nav{display:flex;flex-direction:column;gap:6px}
+.nav-item{display:flex;align-items:center;gap:12px;padding:11px 14px;border-radius:14px;background:transparent;border:1px solid transparent;color:var(--muted);font:inherit;font-size:15px;font-weight:500;cursor:pointer;transition:.2s;text-align:start;width:100%}
+.nav-item .ni{font-size:18px;line-height:1;filter:grayscale(.4);transition:.2s}
+.nav-item:hover{background:rgba(255,255,255,.045);color:#fff}.nav-item:hover .ni{filter:none}
+.nav-item.active{background:linear-gradient(90deg,rgba(168,85,247,.2),rgba(34,211,238,.06));border-color:rgba(168,85,247,.38);color:#fff;box-shadow:inset 0 0 26px rgba(168,85,247,.13),0 0 18px rgba(168,85,247,.1)}
+.nav-item.active .ni{filter:none}
+.me-card{margin-top:auto;display:flex;align-items:center;gap:10px;padding:10px;border-radius:16px;background:rgba(255,255,255,.035);border:1px solid var(--line)}
+.me-info{flex:1;min-width:0}
+.me-name{font-weight:700;font-size:14px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.me-aura{font-size:11.5px;color:var(--p2);font-weight:600}
+.main{padding:28px 32px 70px;max-width:1000px;width:100%;margin:0 auto}
+.topbar{display:none;align-items:center;justify-content:space-between;margin-bottom:20px;gap:10px}
+.av{width:42px;height:42px;border-radius:50%;object-fit:cover;border:2px solid rgba(255,255,255,.09);flex-shrink:0;background:#15151d}
+.av.sm{width:30px;height:30px;border-width:1.5px}
+.av.lg{width:104px;height:104px;border-width:3px;box-shadow:0 0 40px rgba(168,85,247,.35)}
+.muted{color:var(--muted);font-size:13.5px}
+.page-head{display:flex;align-items:flex-end;justify-content:space-between;gap:16px;margin-bottom:22px;flex-wrap:wrap}
+.page-head h1{font-size:27px;font-weight:900;letter-spacing:-.5px}
+.page-head p{font-size:13.5px;color:var(--muted);margin-top:3px}
+.btn{font:inherit;font-weight:600;border-radius:12px;border:1px solid var(--line);background:rgba(255,255,255,.045);color:#fff;padding:10px 17px;cursor:pointer;transition:.18s;display:inline-flex;align-items:center;gap:7px;justify-content:center;text-decoration:none}
+.btn:hover{background:rgba(255,255,255,.1)}.btn:active{transform:scale(.97)}
+.btn.primary{background:var(--grad);border:none;color:#07070c;font-weight:800;box-shadow:0 6px 26px rgba(168,85,247,.36)}
+.btn.primary:hover{filter:brightness(1.12);transform:translateY(-1px)}
+.btn.ghost{background:transparent}.btn.sm{padding:7px 13px;font-size:13px;border-radius:10px}
+.btn.danger{color:#ff7a90;border-color:rgba(255,80,110,.3)}
+.btn.google{background:#fff;color:#1a1a1a;border:none;font-weight:700;box-shadow:0 2px 12px rgba(0,0,0,.3)}
+.btn.google:hover{background:#f0f0f0}
+.btn.google svg{width:18px;height:18px}
+.icon-btn{background:transparent;border:none;color:var(--muted);cursor:pointer;font-size:15px;width:32px;height:32px;border-radius:9px;transition:.18s;flex-shrink:0}
+.icon-btn:hover{background:rgba(255,255,255,.08);color:#fff}
+.input{width:100%;padding:13px 16px;border-radius:14px;background:rgba(255,255,255,.04);border:1px solid var(--line);color:#fff;font:inherit;outline:none;transition:.2s}
+.input::placeholder{color:#5c5c70}
+.input:focus{border-color:rgba(168,85,247,.65);box-shadow:0 0 0 3px rgba(168,85,247,.14)}
+.you{font-size:10px;font-weight:800;background:rgba(34,211,238,.16);color:var(--p2);padding:2px 7px;border-radius:6px;vertical-align:middle;margin-inline-start:5px}
+.admin-badge{font-size:10px;font-weight:800;background:linear-gradient(135deg,#fbbf24,#f59e0b);color:#1a1005;padding:2px 7px;border-radius:6px;vertical-align:middle;margin-inline-start:5px}
+.verified-badge{font-size:11px;color:#22d3ee;margin-inline-start:4px}
+.empty{text-align:center;padding:60px 22px;border:1px dashed rgba(255,255,255,.1);border-radius:24px;background:rgba(255,255,255,.015)}
+.empty-ic{font-size:46px;margin-bottom:14px}
+.empty h3{font-size:19px;margin-bottom:8px;font-weight:800}
+.empty .muted{margin-bottom:20px}
+.auth{min-height:100vh;display:grid;place-items:center;padding:24px 18px}
+.auth-card{width:100%;max-width:420px;background:rgba(14,14,20,.86);backdrop-filter:blur(22px);border:1px solid var(--line);border-radius:28px;padding:36px 28px 28px;text-align:center;box-shadow:0 34px 90px rgba(0,0,0,.75),0 0 70px rgba(168,85,247,.09);animation:fadeUp .5s ease;position:relative}
+.auth-logo{font-size:38px;font-weight:900;letter-spacing:9px;background:var(--grad);-webkit-background-clip:text;background-clip:text;color:transparent;filter:drop-shadow(0 0 26px rgba(168,85,247,.6));margin-bottom:6px}
+.auth-sub{color:var(--muted);font-size:13.5px;margin-bottom:26px}
+.avatar-pick{position:relative;width:112px;height:112px;margin:0 auto 22px;display:block;cursor:pointer}
+.avatar-pick img{width:112px;height:112px;border-radius:50%;object-fit:cover;border:3px solid rgba(168,85,247,.5);box-shadow:0 0 34px rgba(168,85,247,.35);transition:.25s}
+.avatar-pick:hover img{transform:scale(1.04)}
+.avatar-pick .cam{position:absolute;bottom:2px;inset-inline-start:2px;width:34px;height:34px;border-radius:50%;background:var(--grad);display:grid;place-items:center;font-size:15px;border:3px solid #0e0e14}
+.form-stack{display:flex;flex-direction:column;gap:12px}
+.auth-link{background:none;border:none;color:var(--p2);font:inherit;font-size:13px;cursor:pointer;text-decoration:underline;text-underline-offset:3px;padding:6px}
+.auth-link:hover{color:#fff}
+.error-box{background:rgba(255,59,107,.12);border:1px solid rgba(255,59,107,.3);color:#ff9db0;font-size:13px;padding:10px 14px;border-radius:12px;margin-bottom:12px;text-align:start}
+.lang-toggle{position:absolute;top:14px;inset-inline-end:14px;display:flex;gap:3px;background:rgba(255,255,255,.05);border:1px solid var(--line);border-radius:10px;padding:3px}
+.lang-toggle button{background:transparent;border:none;color:var(--muted);font:inherit;font-size:11px;font-weight:700;padding:4px 9px;border-radius:7px;cursor:pointer}
+.lang-toggle button.on{background:rgba(168,85,247,.25);color:#fff}
+.divider-or{display:flex;align-items:center;gap:12px;color:#55556a;font-size:12px;margin:16px 0}
+.divider-or::before,.divider-or::after{content:'';flex:1;height:1px;background:var(--line)}
+.verify-banner{background:linear-gradient(135deg,rgba(251,191,36,.15),rgba(251,146,60,.1));border:1px solid rgba(251,191,36,.4);border-radius:16px;padding:14px 18px;margin-bottom:20px;display:flex;align-items:center;gap:12px;font-size:13.5px;color:#fcd34d}
+.verify-banner .vb-icon{font-size:22px}
+.verify-banner .vb-text{flex:1}
+.verify-banner .vb-text b{color:#fbbf24}
+.feed{display:flex;flex-direction:column;gap:18px}
+.post{background:rgba(16,16,23,.75);border:1px solid var(--line);border-radius:22px;overflow:hidden;animation:fadeUp .35s ease;transition:.25s}
+.post:hover{border-color:rgba(168,85,247,.3);box-shadow:0 12px 40px rgba(0,0,0,.5)}
+.post-head{display:flex;align-items:center;gap:11px;padding:15px 17px 12px}
+.post-meta{flex:1;min-width:0}
+.post-author{font-weight:700;font-size:14.5px;cursor:pointer}
+.post-author:hover{color:var(--p2)}
+.post-sub{font-size:12px;color:var(--muted);margin-top:2px;display:flex;align-items:center;gap:7px;flex-wrap:wrap}
+.grp-badge{background:rgba(168,85,247,.14);color:#d8b4fe;padding:2px 9px;border-radius:7px;cursor:pointer;font-weight:600}
+.grp-badge:hover{background:rgba(168,85,247,.3)}
+.post-media{background:#000;display:flex;justify-content:center}
+.post-media img,.post-media video{width:100%;max-height:520px;object-fit:contain;display:block}
+.post-caption{padding:13px 17px 0;font-size:14.5px;line-height:1.6;color:#dcdce8;white-space:pre-wrap;word-break:break-word}
+.post-foot{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:14px 17px;flex-wrap:wrap}
+.aura-badge{font-size:14px;font-weight:600;color:#cbb2ff;background:rgba(168,85,247,.13);padding:6px 13px;border-radius:11px;border:1px solid rgba(168,85,247,.2)}
+.aura-badge b{color:#fff;font-size:15px}
+.aura-badge.neg{color:#ff9db0;background:rgba(255,59,107,.12);border-color:rgba(255,59,107,.25)}
+.rate-row{display:flex;gap:5px;flex-wrap:wrap;align-items:center}
+.rate{font:inherit;font-size:12px;font-weight:700;padding:6px 10px;border-radius:10px;cursor:pointer;background:rgba(255,255,255,.05);border:1px solid var(--line);color:var(--muted);transition:.18s;min-width:42px}
+.rate:hover{color:#fff;border-color:rgba(34,211,238,.5);background:rgba(34,211,238,.1)}
+.rate.on{background:var(--grad);border-color:transparent;color:#07070c;box-shadow:0 0 18px rgba(168,85,247,.55)}
+.rate.down{color:#ff8aa0}
+.rate.down:hover{border-color:rgba(255,59,107,.5);background:rgba(255,59,107,.12);color:#fff}
+.rate.down.on{background:linear-gradient(135deg,#ff3b6b,#ff7a90);border-color:transparent;color:#fff;box-shadow:0 0 18px rgba(255,59,107,.6)}
+.comments-toggle{background:transparent;border:none;color:var(--muted);font:inherit;font-size:13px;font-weight:600;cursor:pointer;padding:6px 12px;border-radius:10px;transition:.18s;display:inline-flex;align-items:center;gap:6px}
+.comments-toggle:hover{background:rgba(34,211,238,.1);color:var(--p2)}
+.comments-section{padding:0 17px 17px;border-top:1px solid var(--line);margin-top:6px}
+.comments-list{display:flex;flex-direction:column;gap:10px;padding-top:14px;max-height:340px;overflow-y:auto}
+.comment{display:flex;gap:10px;align-items:flex-start}
+.comment-body{flex:1;min-width:0;background:rgba(255,255,255,.04);border:1px solid var(--line);border-radius:14px;padding:9px 13px;position:relative}
+.comment-author{font-weight:700;font-size:13px;color:#e0e0ee;margin-bottom:3px;cursor:pointer}
+.comment-author:hover{color:var(--p2)}
+.comment-text{font-size:13.5px;line-height:1.5;color:#c8c8d6;word-break:break-word}
+.comment-time{font-size:10.5px;color:#5c5c70;margin-top:4px;display:block}
+.comment-del{position:absolute;top:6px;inset-inline-end:6px;background:transparent;border:none;color:#5c5c70;cursor:pointer;font-size:12px;width:22px;height:22px;border-radius:6px;opacity:0;transition:.15s}
+.comment:hover .comment-del{opacity:1}
+.comment-del:hover{background:rgba(255,59,107,.2);color:#ff8aa0}
+.comment-input-row{display:flex;gap:8px;margin-top:12px}
+.comment-input{flex:1;padding:10px 14px;border-radius:20px;background:rgba(255,255,255,.05);border:1px solid var(--line);color:#fff;font:inherit;font-size:13.5px;outline:none;transition:.2s}
+.comment-input:focus{border-color:rgba(34,211,238,.55);box-shadow:0 0 0 3px rgba(34,211,238,.1)}
+.comment-send{border-radius:20px;padding:10px 18px;font-size:13px}
+.search-box{position:relative;margin-bottom:20px}
+.search-box .input{padding-inline-start:44px}
+.search-box .search-ic{position:absolute;inset-inline-start:16px;top:50%;transform:translateY(-50%);font-size:16px;color:var(--muted);pointer-events:none}
+.composer{display:flex;gap:12px;padding:16px;border-radius:20px;background:rgba(16,16,23,.75);border:1px solid var(--line);margin-bottom:20px}
+.composer-body{flex:1;min-width:0}
+.composer textarea{width:100%;min-height:52px;resize:vertical;background:rgba(255,255,255,.04);border:1px solid var(--line);border-radius:14px;padding:12px 15px;color:#fff;font:inherit;font-size:14.5px;outline:none}
+.composer textarea:focus{border-color:rgba(168,85,247,.6)}
+.composer-actions{display:flex;align-items:center;gap:9px;margin-top:10px;flex-wrap:wrap}
+.file-name{font-size:12px;color:var(--p2);max-width:180px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.composer-actions .spacer{flex:1}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:16px}
+.gcard{background:rgba(16,16,23,.75);border:1px solid var(--line);border-radius:22px;padding:20px;cursor:pointer;transition:.25s;position:relative;overflow:hidden}
+.gcard:hover{transform:translateY(-4px);border-color:rgba(168,85,247,.5);box-shadow:0 16px 44px rgba(168,85,247,.2)}
+.gcard-emoji{font-size:34px;margin-bottom:12px}
+.gcard-name{font-weight:800;font-size:17px;margin-bottom:6px}
+.gcard-sub{font-size:12.5px;color:var(--muted);margin-bottom:14px}
+.gcard-foot{display:flex;align-items:center;justify-content:space-between}
+.stack{display:flex}
+.stack img{width:26px;height:26px;border-radius:50%;border:2px solid #101018;margin-inline-start:-8px;object-fit:cover}
+.stack img:first-child{margin-inline-start:0}
+.gcard-aura{font-size:13px;font-weight:700;color:#cbb2ff}
+.back{background:none;border:none;color:var(--muted);font:inherit;font-size:13.5px;cursor:pointer;padding:6px 0;margin-bottom:8px;display:inline-block}
+.back:hover{color:var(--p2)}
+.group-hero{display:flex;align-items:center;gap:18px;margin-bottom:22px}
+.gh-emoji{width:78px;height:78px;border-radius:22px;display:grid;place-items:center;font-size:38px;background:linear-gradient(135deg,rgba(168,85,247,.2),rgba(34,211,238,.12));border:1px solid rgba(168,85,247,.3);flex-shrink:0}
+.gh-info h1{font-size:25px;font-weight:900;letter-spacing:-.5px}
+.gh-info p{font-size:13px;color:var(--muted);margin-top:5px}
+.tabs{display:flex;gap:7px;margin-bottom:20px;background:rgba(255,255,255,.03);padding:5px;border-radius:15px;border:1px solid var(--line);overflow-x:auto}
+.tab{flex:1;min-width:70px;padding:9px 14px;border-radius:11px;border:none;background:transparent;color:var(--muted);font:inherit;font-size:14px;font-weight:600;cursor:pointer;white-space:nowrap}
+.tab:hover{color:#fff;background:rgba(255,255,255,.05)}
+.tab.on{background:var(--grad);color:#07070c;font-weight:800}
+.rank-list{display:flex;flex-direction:column;gap:11px}
+.rank-row{display:flex;align-items:center;gap:13px;padding:14px 17px;border-radius:18px;background:rgba(16,16,23,.7);border:1px solid var(--line)}
+.rank-row.top{border-color:rgba(168,85,247,.35);background:linear-gradient(90deg,rgba(168,85,247,.12),rgba(16,16,23,.7))}
+.rank-pos{font-size:19px;width:34px;text-align:center;font-weight:800;color:var(--muted);flex-shrink:0}
+.rank-info{flex:1;min-width:0}
+.rank-name{font-weight:700;font-size:14.5px;margin-bottom:7px}
+.rank-bar{height:6px;border-radius:6px;background:rgba(255,255,255,.07);overflow:hidden}
+.rank-bar span{display:block;height:100%;border-radius:6px;background:var(--grad);transition:width .5s}
+.rank-bar span.neg{background:linear-gradient(90deg,#ff3b6b,#ff7a90)}
+.rank-aura{font-weight:800;font-size:15px;color:#cbb2ff;flex-shrink:0}
+.rank-aura.neg{color:#ff8aa0}
+.chat-scroll{height:min(52vh,460px);overflow-y:auto;padding:18px;border-radius:20px;background:rgba(12,12,18,.6);border:1px solid var(--line);display:flex;flex-direction:column;gap:14px}
+.msg{display:flex;gap:9px;align-items:flex-end}
+.msg.mine{justify-content:flex-end}
+.bubble{max-width:72%;padding:10px 15px;border-radius:17px;background:rgba(255,255,255,.065);border:1px solid var(--line);font-size:14.5px;line-height:1.55;word-break:break-word;white-space:pre-wrap}
+.msg.mine .bubble{background:linear-gradient(135deg,rgba(168,85,247,.4),rgba(34,211,238,.28));border-color:rgba(168,85,247,.45)}
+.msg-time{font-size:10.5px;color:#5c5c70;margin-top:5px;display:block}
+.chat-input-row{display:flex;gap:10px;margin-top:14px}
+.chat-input-row .input{border-radius:30px}
+.chat-input-row .btn{border-radius:30px;padding:12px 22px}
+.chat-day{text-align:center;font-size:11.5px;color:#55556a;margin:4px 0}
+.list{display:flex;flex-direction:column;gap:10px}
+.row{display:flex;align-items:center;gap:13px;padding:13px 16px;border-radius:18px;background:rgba(16,16,23,.7);border:1px solid var(--line);cursor:pointer;transition:.2s}
+.row:hover{background:rgba(168,85,247,.1);border-color:rgba(168,85,247,.35)}
+.row-info{flex:1;min-width:0}
+.row-name{font-weight:700;font-size:14.5px}
+.row-sub{font-size:12.5px;color:var(--muted);margin-top:3px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.row-action{flex-shrink:0;display:flex;gap:6px}
+.profile-card{text-align:center;padding:38px 24px;border-radius:26px;background:rgba(16,16,23,.7);border:1px solid var(--line);margin-bottom:18px;position:relative;overflow:hidden}
+.profile-card::before{content:'';position:absolute;top:-120px;left:50%;transform:translateX(-50%);width:340px;height:240px;background:radial-gradient(circle,rgba(168,85,247,.3),transparent 70%);pointer-events:none}
+.profile-card>*{position:relative}
+.profile-name{font-size:25px;font-weight:900;margin:16px 0 6px}
+.aura-big{display:inline-flex;align-items:center;gap:9px;font-size:21px;font-weight:900;color:#fff;background:linear-gradient(135deg,rgba(168,85,247,.28),rgba(34,211,238,.16));border:1px solid rgba(168,85,247,.4);padding:9px 24px;border-radius:30px;margin-top:8px}
+.aura-big.neg{background:linear-gradient(135deg,rgba(255,59,107,.28),rgba(255,122,144,.16));border-color:rgba(255,59,107,.4)}
+.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-bottom:18px}
+.stat{background:rgba(16,16,23,.7);border:1px solid var(--line);border-radius:18px;padding:18px 10px;text-align:center}
+.stat b{display:block;font-size:23px;font-weight:900;background:var(--grad);-webkit-background-clip:text;background-clip:text;color:transparent}
+.stat span{font-size:12px;color:var(--muted);margin-top:3px;display:block}
+.modal-back{position:fixed;inset:0;background:rgba(4,4,8,.78);backdrop-filter:blur(7px);z-index:100;display:grid;place-items:center;padding:20px}
+.modal{width:100%;max-width:440px;background:#101018;border:1px solid rgba(168,85,247,.25);border-radius:26px;padding:28px;max-height:88vh;overflow-y:auto}
+.modal h2{font-size:21px;font-weight:900;margin-bottom:20px}
+.sub-label{font-size:12.5px;color:var(--muted);font-weight:600;margin:18px 0 10px}
+.emoji-row{display:flex;gap:7px;flex-wrap:wrap;margin-top:14px}
+.emoji-opt{width:44px;height:44px;border-radius:13px;background:rgba(255,255,255,.045);border:1px solid var(--line);font-size:21px;cursor:pointer;display:grid;place-items:center}
+.emoji-opt.on{background:rgba(168,85,247,.28);border-color:rgba(168,85,247,.75)}
+.pick-list{display:flex;flex-direction:column;gap:7px;max-height:210px;overflow-y:auto}
+.pick{display:flex;align-items:center;gap:11px;padding:9px 13px;border-radius:13px;background:rgba(255,255,255,.035);border:1px solid var(--line);cursor:pointer}
+.pick input{accent-color:#a855f7;width:17px;height:17px}
+.pick img{width:32px;height:32px;border-radius:50%;object-fit:cover}
+.pick span{font-size:14px;font-weight:600}
+.modal-actions{display:flex;gap:10px;margin-top:24px}
+.modal-actions .btn{flex:1}
+.toast{position:fixed;bottom:26px;left:50%;transform:translate(-50%,90px);background:linear-gradient(135deg,rgba(168,85,247,.95),rgba(34,211,238,.9));color:#07070c;font-weight:800;font-size:14px;padding:13px 26px;border-radius:16px;z-index:200;opacity:0;transition:.35s;pointer-events:none;max-width:88vw;text-align:center}
+.toast.show{transform:translate(-50%,0);opacity:1}
+.toast.err{background:linear-gradient(135deg,#ff3b6b,#ff7a90);color:#fff}
+.loading-overlay{position:fixed;inset:0;background:rgba(4,4,8,.85);backdrop-filter:blur(8px);z-index:300;display:grid;place-items:center;transition:.25s}
+.loading-overlay.hidden{opacity:0;pointer-events:none}
+.spinner{width:44px;height:44px;border:3px solid rgba(168,85,247,.2);border-top-color:#a855f7;border-radius:50%;animation:spin .8s linear infinite}
+@keyframes spin{to{transform:rotate(360deg)}}
+@keyframes fadeUp{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:none}}
+@media (max-width:880px){
+  .shell{grid-template-columns:1fr;padding-bottom:78px}
+  .sidebar{position:fixed;bottom:0;inset-inline:0;top:auto;height:auto;flex-direction:row;border-inline-end:none;border-top:1px solid var(--line);padding:8px 8px calc(8px + env(safe-area-inset-bottom));background:rgba(8,8,12,.94);gap:0}
+  .brand,.me-card{display:none}
+  .nav{flex-direction:row;width:100%;justify-content:space-around;gap:0}
+  .nav-item{flex-direction:column;gap:3px;font-size:10.5px;padding:8px 4px;flex:1;align-items:center;border-radius:13px;text-align:center}
+  .nav-item .ni{font-size:19px}
+  .main{padding:18px 14px 30px}
+  .topbar{display:flex}
+  .page-head h1{font-size:23px}
+  .gh-emoji{width:62px;height:62px;font-size:30px}
+  .gh-info h1{font-size:21px}
+  .chat-scroll{height:56vh}
+  .rate{padding:6px 8px;font-size:11px;min-width:36px}
+  .bubble{max-width:82%}
+  .lang-toggle{top:10px;inset-inline-end:10px}
+}
+</style>
+</head>
+<body>
+<div id="app"></div>
+<div id="toast" class="toast"></div>
+<div id="loading" class="loading-overlay"><div class="spinner"></div></div>
+
+<script type="module">
+/* ═══════════ Firebase Config ═══════════ */
+const firebaseConfig = {
+  apiKey: "AIzaSyDeMmI_WS6vyp5cJx7eX9spmhV9nkckTUE",
+  authDomain: "aura-app-3a4e5.firebaseapp.com",
+  projectId: "aura-app-3a4e5",
+  storageBucket: "aura-app-3a4e5.firebasestorage.app",
+  messagingSenderId: "404329248061",
+  appId: "1:404329248061:web:0d1457e55b8fe7a59f4154"
+};
+
+/* ═══════════ Firebase imports ═══════════ */
+import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js';
+import {
+  getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword,
+  signOut, sendPasswordResetEmail, onAuthStateChanged, updateProfile,
+  GoogleAuthProvider, signInWithPopup, sendEmailVerification
+} from 'https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js';
+import {
+  getFirestore, doc, setDoc, getDoc, updateDoc, deleteDoc, collection,
+  addDoc, onSnapshot, query, where, arrayUnion, arrayRemove, limit, orderBy
+} from 'https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js';
+
+/* ═══════════ Translations ═══════════ */
+const T = {
+  he: {
+    tagline:'הרשת של הגיימרים',
+    welcomeBack:'ברוך הבא בחזרה', createAccount:'צור חשבון חדש', resetPassword:'איפוס סיסמה',
+    email:'אימייל', password:'סיסמה', name:'שם משתמש',
+    loginBtn:'התחבר', signupBtn:'צור חשבון',
+    noAccount:'אין לך חשבון? הירשם', hasAccount:'יש לך חשבון? התחבר',
+    forgotPassword:'שכחתי סיסמה', sendReset:'שלח קישור לאיפוס', resetSent:'נשלח לך מייל לאיפוס סיסמה 📧',
+    backToLogin:'→ חזור להתחברות',
+    orSignInWith:'או התחבר עם',
+    googleSignIn:'המשך עם Google',
+    errInvalidEmail:'אימייל לא תקין', errWrongPass:'סיסמה שגויה', errUserExists:'האימייל כבר רשום',
+    errWeakPass:'סיסמה חלשה מדי (6 תווים לפחות)', errUserNotFound:'משתמש לא נמצא',
+    errTooMany:'יותר מדי ניסיונות, נסה שוב בעוד דקה', errNetwork:'בעיית רשת, בדוק את החיבור',
+    errNameEmpty:'הכנס שם', errEmailEmpty:'הכנס אימייל', errPassEmpty:'הכנס סיסמה',
+    errGeneric:'שגיאה, נסה שוב', errInvalidCred:'אימייל או סיסמה שגויים',
+    errPopupClosed:'סגרת את חלון ההתחברות', errPopupBlocked:'הדפדפן חסם את חלון ההתחברות',
+    navFeed:'פיד', navFriends:'חברים', navGroups:'קבוצות', navChats:'צ׳אטים', navProfile:'פרופיל',
+    feedTitle:'הפיד', feedSub:'כל מה שקורה בקבוצות שלך',
+    emptyFeedTitle:'הפיד ריק', emptyFeedSub:'צור קבוצה, הזמן חברים והתחילו לצבור Aura',
+    newGroup:'+ קבוצה חדשה', createGroup:'צור קבוצה',
+    myGroups:'הקבוצות שלי', groupsCount:n=>`${n} קבוצות פעילות`,
+    emptyGroupsTitle:'אין לך קבוצות', emptyGroupsSub:'קבוצה היא המקום שבו צוברים Aura ביחד',
+    groupName:'שם הקבוצה', chooseEmoji:'בחר אימוג׳י', chooseMembers:'בחר חברים שיצטרפו',
+    noFriendsYet:'אין לך חברים עדיין — אפשר להוסיף אחר כך', membersCount:n=>`${n} חברים`,
+    postsCount:n=>`${n} פוסטים`, groupAura:n=>`⚡ ${n} Aura קבוצתי`,
+    feedTab:'פיד', chatTab:'צ׳אט', rankTab:'דירוג', membersTab:'חברים',
+    allGroups:'→ כל הקבוצות', groupNotFound:'הקבוצה לא נמצאה',
+    noPostsTitle:'עדיין אין פוסטים', noPostsSub:'העלה תמונה או סרטון — החברים ידרגו כמה Aura מגיע לך',
+    startChatGroup:'התחילו לדבר בקבוצה 💬',
+    friendsTitle:'חברים', friendCount:n=>`${n} חברים`,
+    emptyFriendsTitle:'אין לך חברים עדיין', emptyFriendsSub:'הוסף גיימרים מהרשימה למטה',
+    suggestedGamers:'גיימרים שאפשר להוסיף', addFriend:'+ הוסף', removeFriend:'הסר',
+    searchPlaceholder:'חפש משתמשים לפי שם...', searchNoResults:'לא נמצאו משתמשים',
+    chatsTitle:'צ׳אטים', chatsSub:'שיחות פרטיות', newChat:'+ שיחה חדשה',
+    emptyChatsTitle:'אין שיחות עדיין', emptyChatsSub:'בחר חבר מהרשימה והתחל להתכתב',
+    toFriends:'לחברים', backToChats:'→ כל הצ׳אטים', startPrivateChat:'התחילו שיחה חדשה 💬',
+    profileTitle:'הפרופיל שלי', editName:'שם משתמש', changeNameHint:'שנה את השם שיוצג לכולם',
+    save:'שמור', logout:'החלף משתמש',
+    totalAura:'Aura כולל', postsStat:'פוסטים', groupsStat:'קבוצות',
+    whatUp:'מה קורה? הוסף תיאור לפוסט...', addMedia:'📎 מדיה', publish:'פרסם ⚡',
+    auraLabel:'Aura', deletePost:'מחק', kickMember:'הוצא', deleteGroup:'מחק קבוצה',
+    confirmDeletePost:'למחוק את הפוסט?', confirmKick:'להוציא את החבר מהקבוצה?',
+    confirmDeleteGroup:'למחוק את הקבוצה לצמיתות? כל הפוסטים וההודעות יימחקו.',
+    adminLabel:'מנהל', youLabel:'אתה',
+    addToGroup:'הוסף', addMembersTitle:'הוסף חברים לקבוצה',
+    writeMessage:'כתוב הודעה...', send:'שלח',
+    groupCreated:'הקבוצה נוצרה! 🎮', postPublished:'פורסם! ⚡', added:'נוסף לקבוצה 🎮',
+    friendAdded:'התווספתם! 🤝', nameUpdated:'השם עודכן ✅', avatarUpdated:'תמונת הפרופיל עודכנה ✅',
+    cannotRateSelf:'אי אפשר לדרג את עצמך 😅', addMediaOrText:'הוסף מדיה או טקסט',
+    groupNameEmpty:'תן שם לקבוצה', fileTooBig:'הקובץ גדול מדי', uploading:'מעלה...',
+    langName:'עברית', switchLang:'English', loggedOut:'התנתקת',
+    imageOnly:'רק תמונות וסרטונים',
+    verifyTitle:'אמת את האימייל שלך',
+    verifyText:'שלחנו לך מייל ל-{email}. לחץ על הקישור כדי לאמת.',
+    verifyResend:'שלח שוב',
+    verifyResent:'נשלח מייל נוסף 📧',
+    verifyAlready:'אימתתי — רענן',
+    commentsLabel:'תגובות', addComment:'הוסף תגובה...', commentSend:'שלח',
+    noComments:'אין תגובות עדיין — היה הראשון!', deleteComment:'מחק תגובה?',
+    profilePublic:'פרופיל', closeProfile:'סגור',
+    notVerifiedWarning:'האימייל שלך לא מאומת. חלק מהתכונות לא יעבדו.',
+    googleAccountExists:'החשבון הזה קיים — התחברת אוטומטית 🎉'
+  },
+  en: {
+    tagline:'The Gamers Network',
+    welcomeBack:'Welcome back', createAccount:'Create new account', resetPassword:'Reset password',
+    email:'Email', password:'Password', name:'Username',
+    loginBtn:'Sign In', signupBtn:'Create Account',
+    noAccount:"Don't have an account? Sign up", hasAccount:'Have an account? Sign in',
+    forgotPassword:'Forgot password?', sendReset:'Send reset link', resetSent:'Reset email sent 📧',
+    backToLogin:'← Back to sign in',
+    orSignInWith:'or sign in with',
+    googleSignIn:'Continue with Google',
+    errInvalidEmail:'Invalid email', errWrongPass:'Wrong password', errUserExists:'Email already registered',
+    errWeakPass:'Password too weak (min 6 chars)', errUserNotFound:'User not found',
+    errTooMany:'Too many attempts, try again in a minute', errNetwork:'Network error, check your connection',
+    errNameEmpty:'Enter a name', errEmailEmpty:'Enter an email', errPassEmpty:'Enter a password',
+    errGeneric:'Error, please try again', errInvalidCred:'Invalid email or password',
+    errPopupClosed:'You closed the sign-in popup', errPopupBlocked:'Browser blocked the popup',
+    navFeed:'Feed', navFriends:'Friends', navGroups:'Groups', navChats:'Chats', navProfile:'Profile',
+    feedTitle:'Feed', feedSub:'Everything happening in your groups',
+    emptyFeedTitle:'Feed is empty', emptyFeedSub:'Create a group, invite friends, and start earning Aura',
+    newGroup:'+ New Group', createGroup:'Create Group',
+    myGroups:'My Groups', groupsCount:n=>`${n} active groups`,
+    emptyGroupsTitle:"You don't have groups yet", emptyGroupsSub:'A group is where you earn Aura together',
+    groupName:'Group name', chooseEmoji:'Choose emoji', chooseMembers:'Select members to invite',
+    noFriendsYet:'No friends yet — you can add them later', membersCount:n=>`${n} members`,
+    postsCount:n=>`${n} posts`, groupAura:n=>`⚡ ${n} Group Aura`,
+    feedTab:'Feed', chatTab:'Chat', rankTab:'Ranking', membersTab:'Members',
+    allGroups:'← All Groups', groupNotFound:'Group not found',
+    noPostsTitle:'No posts yet', noPostsSub:'Upload a photo or video — friends will rate your Aura',
+    startChatGroup:'Start chatting in the group 💬',
+    friendsTitle:'Friends', friendCount:n=>`${n} friends`,
+    emptyFriendsTitle:'No friends yet', emptyFriendsSub:'Add gamers from the list below',
+    suggestedGamers:'Suggested gamers', addFriend:'+ Add', removeFriend:'Remove',
+    searchPlaceholder:'Search users by name...', searchNoResults:'No users found',
+    chatsTitle:'Chats', chatsSub:'Private conversations', newChat:'+ New Chat',
+    emptyChatsTitle:'No chats yet', emptyChatsSub:'Pick a friend and start chatting',
+    toFriends:'Friends', backToChats:'← All Chats', startPrivateChat:'Start a new conversation 💬',
+    profileTitle:'My Profile', editName:'Username', changeNameHint:'Change the name shown to others',
+    save:'Save', logout:'Switch user',
+    totalAura:'Total Aura', postsStat:'Posts', groupsStat:'Groups',
+    whatUp:"What's up? Add a caption...", addMedia:'📎 Media', publish:'Publish ⚡',
+    auraLabel:'Aura', deletePost:'Delete', kickMember:'Kick', deleteGroup:'Delete Group',
+    confirmDeletePost:'Delete this post?', confirmKick:'Kick this member?',
+    confirmDeleteGroup:'Delete group permanently? All posts and messages will be lost.',
+    adminLabel:'Admin', youLabel:'You',
+    addToGroup:'Add', addMembersTitle:'Add members to group',
+    writeMessage:'Type a message...', send:'Send',
+    groupCreated:'Group created! 🎮', postPublished:'Published! ⚡', added:'Added to group 🎮',
+    friendAdded:'You are now friends! 🤝', nameUpdated:'Name updated ✅', avatarUpdated:'Profile photo updated ✅',
+    cannotRateSelf:"Can't rate yourself 😅", addMediaOrText:'Add media or text',
+    groupNameEmpty:'Name the group first', fileTooBig:'File too large', uploading:'Uploading...',
+    langName:'English', switchLang:'עברית', loggedOut:'Signed out',
+    imageOnly:'Images and videos only',
+    verifyTitle:'Verify your email',
+    verifyText:'We sent a verification email to {email}. Click the link to verify.',
+    verifyResend:'Resend',
+    verifyResent:'Another email sent 📧',
+    verifyAlready:'I verified — refresh',
+    commentsLabel:'Comments', addComment:'Add a comment...', commentSend:'Send',
+    noComments:'No comments yet — be the first!', deleteComment:'Delete comment?',
+    profilePublic:'Profile', closeProfile:'Close',
+    notVerifiedWarning:'Your email is not verified. Some features won\'t work.',
+    googleAccountExists:'Account exists — signed in automatically 🎉'
+  }
+};
+
+/* ═══════════ Utils ═══════════ */
+const $ = s => document.querySelector(s);
+const uid = () => Math.random().toString(36).slice(2,10) + Date.now().toString(36).slice(-4);
+const esc = s => String(s ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const t = (k, vars) => {
+  let v = T[state.lang]?.[k];
+  if (typeof v === 'function') return v;
+  if (typeof v !== 'string') return k;
+  if (vars) Object.keys(vars).forEach(k2 => { v = v.replace(`{${k2}}`, vars[k2]); });
+  return v;
+};
+
+function avatarFor(name){
+  const n = (name || '?').trim() || '?';
+  const l = n.charAt(0).toUpperCase();
+  let h = 0; for (const c of n) h += c.charCodeAt(0); h %= 360;
+  const svg = `<svg xmlns="http://www.w3.org/2000/svg" width="220" height="220"><defs><linearGradient id="g" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="hsl(${h},78%,58%)"/><stop offset="1" stop-color="hsl(${(h+70)%360},80%,42%)"/></linearGradient></defs><rect width="220" height="220" fill="url(#g)"/><text x="110" y="118" font-size="102" font-family="Heebo,Arial,sans-serif" font-weight="700" fill="rgba(255,255,255,.92)" text-anchor="middle" dominant-baseline="middle">${esc(l)}</text></svg>`;
+  return 'data:image/svg+xml;charset=utf-8,' + encodeURIComponent(svg);
+}
+
+function timeAgo(ts){
+  if (!ts) return '';
+  const d = Date.now() - ts, m = Math.floor(d/6e4);
+  if (m < 1) return state.lang === 'he' ? 'עכשיו' : 'now';
+  if (m < 60) return state.lang === 'he' ? `לפני ${m} דק׳` : `${m}m ago`;
+  const h = Math.floor(m/60);
+  if (h < 24) return state.lang === 'he' ? `לפני ${h} שע׳` : `${h}h ago`;
+  const dd = Math.floor(h/24);
+  if (dd < 7) return state.lang === 'he' ? `לפני ${dd} ימים` : `${dd}d ago`;
+  return new Date(ts).toLocaleDateString(state.lang === 'he' ? 'he-IL' : 'en-US');
+}
+function clockTime(ts){ return new Date(ts).toLocaleTimeString(state.lang === 'he' ? 'he-IL' : 'en-US', {hour:'2-digit',minute:'2-digit'}); }
+
+let toastT;
+function toast(msg, isErr){
+  const el = $('#toast');
+  el.textContent = msg;
+  el.classList.toggle('err', !!isErr);
+  el.classList.add('show');
+  clearTimeout(toastT);
+  toastT = setTimeout(() => el.classList.remove('show'), 2600);
+}
+
+async function compressImage(file, maxDim = 1200, quality = 0.72){
+  return new Promise((resolve, reject) => {
+    const img = new Image();
+    const reader = new FileReader();
+    reader.onload = e => { img.src = e.target.result; };
+    reader.onerror = reject;
+    img.onload = () => {
+      const canvas = document.createElement('canvas');
+      let { width, height } = img;
+      if (width > maxDim || height > maxDim){
+        const r = Math.min(maxDim/width, maxDim/height);
+        width = Math.round(width * r); height = Math.round(height * r);
+      }
+      canvas.width = width; canvas.height = height;
+      canvas.getContext('2d').drawImage(img, 0, 0, width, height);
+      resolve(canvas.toDataURL('image/jpeg', quality));
+    };
+    img.onerror = reject;
+    reader.readAsDataURL(file);
+  });
+}
+function readAsDataURL(file){
+  return new Promise((res, rej) => {
+    const r = new FileReader();
+    r.onload = () => res(r.result);
+    r.onerror = rej;
+    r.readAsDataURL(file);
+  });
+}
+
+function errMsg(code){
+  const map = {
+    'auth/email-already-in-use': 'errUserExists',
+    'auth/invalid-email': 'errInvalidEmail',
+    'auth/weak-password': 'errWeakPass',
+    'auth/wrong-password': 'errWrongPass',
+    'auth/user-not-found': 'errUserNotFound',
+    'auth/invalid-credential': 'errInvalidCred',
+    'auth/invalid-login-credentials': 'errInvalidCred',
+    'auth/too-many-requests': 'errTooMany',
+    'auth/network-request-failed': 'errNetwork',
+    'auth/popup-closed-by-user': 'errPopupClosed',
+    'auth/popup-blocked': 'errPopupBlocked',
+    'auth/cancelled-popup-request': 'errPopupClosed'
+  };
+  return t(map[code] || 'errGeneric');
+}
+
+/* ═══════════ State ═══════════ */
+const state = {
+  lang: localStorage.getItem('aura_lang') || 'he',
+  fbUser: null,
+  profile: null,
+  users: {},
+  groups: {},
+  groupPosts: {},
+  groupMessages: {},
+  chats: {},
+  chatMessages: {},
+  view: { name: 'feed', id: null },
+  gTab: 'feed',
+  modal: null,
+  pendingEmoji: '🎮',
+  pendingAvatar: null,
+  pendingPost: null,
+  openComments: {},
+  profileView: null,
+  searchQuery: '',
+  ui: { authMode: 'login', error: '' },
+  unsubs: [],
+  currentGroupUnsubs: [],
+  currentChatUnsub: null
+};
+
+function applyLang(){
+  document.documentElement.lang = state.lang;
+  document.documentElement.dir = state.lang === 'he' ? 'rtl' : 'ltr';
+}
+applyLang();
+
+/* ═══════════ Firebase init ═══════════ */
+const app = initializeApp(firebaseConfig);
+const auth = getAuth(app);
+const db = getFirestore(app);
+
+/* ═══════════ Auth helpers ═══════════ */
+function clearAllListeners(){
+  state.unsubs.forEach(u => { try { u(); } catch(e){} });
+  state.unsubs = [];
+  state.currentGroupUnsubs.forEach(u => { try { u(); } catch(e){} });
+  state.currentGroupUnsubs = [];
+  if (state.currentChatUnsub){ try { state.currentChatUnsub(); } catch(e){} state.currentChatUnsub = null; }
+}
+
+async function doSignup(name, email, pass){
+  const cred = await createUserWithEmailAndPassword(auth, email, pass);
+  await updateProfile(cred.user, { displayName: name });
+  await setDoc(doc(db, 'users', cred.user.uid), {
+    name, email, avatar: avatarFor(name), friends: [],
+    createdAt: Date.now()
+  });
+  try { await sendEmailVerification(cred.user); } catch(e){ console.warn('verify email failed', e); }
+  return cred.user;
+}
+async function doLogin(email, pass){ return await signInWithEmailAndPassword(auth, email, pass); }
+async function doReset(email){ return await sendPasswordResetEmail(auth, email); }
+async function doLogout(){
+  clearAllListeners();
+  state.profile = null;
+  state.users = {}; state.groups = {}; state.groupPosts = {}; state.groupMessages = {};
+  state.chats = {}; state.chatMessages = {};
+  state.openComments = {};
+  await signOut(auth);
+}
+
+async function doGoogleLogin(){
+  const provider = new GoogleAuthProvider();
+  const cred = await signInWithPopup(auth, provider);
+  const userRef = doc(db, 'users', cred.user.uid);
+  const snap = await getDoc(userRef);
+  if (!snap.exists()){
+    await setDoc(userRef, {
+      name: cred.user.displayName || 'User',
+      email: cred.user.email,
+      avatar: cred.user.photoURL || avatarFor(cred.user.displayName || 'U'),
+      friends: [],
+      createdAt: Date.now()
+    });
+    toast(t('googleAccountExists'));
+  }
+  return cred.user;
+}
+
+async function resendVerification(){
+  if (!state.fbUser) return;
+  try {
+    await sendEmailVerification(state.fbUser);
+    toast(t('verifyResent'));
+  } catch(e){
+    if (e.code === 'auth/too-many-requests') toast(t('errTooMany'), true);
+    else toast(errMsg(e.code), true);
+  }
+}
+
+async function refreshUser(){
+  if (!state.fbUser) return;
+  try {
+    await state.fbUser.reload();
+    if (state.fbUser.emailVerified){
+      toast(t('verifyAlready'));
+      render();
+    } else {
+      toast(t('notVerifiedWarning'), true);
+    }
+  } catch(e){ toast(errMsg(e.code), true); }
+}
+
+/* ═══════════ Listeners ═══════════ */
+function attachListeners(uid){
+  state.unsubs.push(onSnapshot(doc(db, 'users', uid), snap => {
+    if (snap.exists()){
+      state.profile = { id: snap.id, ...snap.data() };
+      render();
+    }
+  }));
+
+  state.unsubs.push(onSnapshot(query(collection(db, 'users'), limit(200)), snap => {
+    state.users = {};
+    snap.forEach(d => { state.users[d.id] = { id: d.id, ...d.data() }; });
+    render();
+  }));
+
+  state.unsubs.push(onSnapshot(
+    query(collection(db, 'groups'), where('members', 'array-contains', uid)),
+    snap => {
+      state.groups = {};
+      snap.forEach(d => { state.groups[d.id] = { id: d.id, ...d.data() }; });
+      render();
+    }
+  ));
+
+  state.unsubs.push(onSnapshot(
+    query(collection(db, 'chats'), where('members', 'array-contains', uid)),
+    snap => {
+      state.chats = {};
+      snap.forEach(d => { state.chats[d.id] = { id: d.id, ...d.data() }; });
+      render();
+    }
+  ));
+}
+
+function subscribeGroup(gid){
+  state.currentGroupUnsubs.forEach(u => { try { u(); } catch(e){} });
+  state.currentGroupUnsubs = [];
+
+  state.currentGroupUnsubs.push(onSnapshot(
+    query(collection(db, 'groups', gid, 'posts'), orderBy('ts', 'desc'), limit(100)),
+    snap => {
+      const posts = {};
+      snap.forEach(d => { posts[d.id] = { id: d.id, ...d.data() }; });
+      state.groupPosts[gid] = posts;
+      render();
+    }
+  ));
+
+  state.currentGroupUnsubs.push(onSnapshot(
+    query(collection(db, 'groups', gid, 'messages'), orderBy('ts', 'asc'), limit(200)),
+    snap => {
+      const msgs = {};
+      snap.forEach(d => { msgs[d.id] = { id: d.id, ...d.data() }; });
+      state.groupMessages[gid] = msgs;
+      render();
+      const cs = document.getElementById('chatScroll');
+      if (cs) cs.scrollTop = cs.scrollHeight;
+    }
+  ));
+}
+
+function unsubscribeGroup(){
+  state.currentGroupUnsubs.forEach(u => { try { u(); } catch(e){} });
+  state.currentGroupUnsubs = [];
+}
+
+function subscribeChat(cid){
+  if (state.currentChatUnsub){ try { state.currentChatUnsub(); } catch(e){} }
+  state.currentChatUnsub = onSnapshot(
+    query(collection(db, 'chats', cid, 'messages'), orderBy('ts', 'asc'), limit(200)),
+    snap => {
+      const msgs = {};
+      snap.forEach(d => { msgs[d.id] = { id: d.id, ...d.data() }; });
+      state.chatMessages[cid] = msgs;
+      render();
+      const cs = document.getElementById('chatScroll');
+      if (cs) cs.scrollTop = cs.scrollHeight;
+    }
+  );
+}
+
+/* ═══════════ Actions ═══════════ */
+function groupAuraLocal(gid, uid){
+  const posts = state.groupPosts[gid] || {};
+  return Object.values(posts)
+    .filter(p => p.authorId === uid)
+    .reduce((s, p) => s + Object.values(p.ratings || {}).reduce((a, b) => a + b, 0), 0);
+}
+
+async function ratePost(gid, pid, val){
+  const post = state.groupPosts[gid]?.[pid];
+  if (!post) return;
+  if (post.authorId === state.fbUser.uid){ toast(t('cannotRateSelf')); return; }
+  const current = post.ratings || {};
+  const mine = current[state.fbUser.uid] || 0;
+  const updates = {};
+  if (mine === val) updates[`ratings.${state.fbUser.uid}`] = 0;
+  else updates[`ratings.${state.fbUser.uid}`] = val;
+  try { await updateDoc(doc(db, 'groups', gid, 'posts', pid), updates); }
+  catch(e){ toast(errMsg(e.code), true); }
+}
+
+async function addComment(gid, pid){
+  const input = document.getElementById(`commentInput-${pid}`);
+  if (!input) return;
+  const text = input.value.trim();
+  if (!text) return;
+  const post = state.groupPosts[gid]?.[pid];
+  if (!post) return;
+  const comments = Array.isArray(post.comments) ? [...post.comments] : [];
+  comments.push({
+    id: uid(),
+    authorId: state.fbUser.uid,
+    text,
+    ts: Date.now()
+  });
+  try {
+    await updateDoc(doc(db, 'groups', gid, 'posts', pid), { comments });
+    input.value = '';
+  } catch(e){ toast(errMsg(e.code), true); }
+}
+
+async function deleteComment(gid, pid, cid){
+  if (!confirm(t('deleteComment'))) return;
+  const post = state.groupPosts[gid]?.[pid];
+  if (!post) return;
+  const comments = (post.comments || []).filter(c => c.id !== cid);
+  try { await updateDoc(doc(db, 'groups', gid, 'posts', pid), { comments }); }
+  catch(e){ toast(errMsg(e.code), true); }
+}
+
+async function publishPost(){
+  const gid = state.view.id;
+  const cap = (document.getElementById('capInput')?.value || '').trim();
+  if (!state.pendingPost && !cap){ toast(t('addMediaOrText')); return; }
+  const body = {
+    authorId: state.fbUser.uid,
+    kind: state.pendingPost?.kind || 'text',
+    src: state.pendingPost?.src || '',
+    caption: cap,
+    ts: Date.now(),
+    ratings: {},
+    comments: []
+  };
+  try {
+    await addDoc(collection(db, 'groups', gid, 'posts'), body);
+    state.pendingPost = null;
+    toast(t('postPublished'));
+  } catch(e){ toast(errMsg(e.code), true); }
+}
+
+async function deletePost(gid, pid){
+  if (!confirm(t('confirmDeletePost'))) return;
+  try { await deleteDoc(doc(db, 'groups', gid, 'posts', pid)); }
+  catch(e){ toast(errMsg(e.code), true); }
+}
+
+async function sendGroupMessage(){
+  const i = document.getElementById('chatInput');
+  if (!i) return;
+  const txt = i.value.trim();
+  if (!txt) return;
+  const gid = state.view.id;
+  try {
+    await addDoc(collection(db, 'groups', gid, 'messages'), {
+      authorId: state.fbUser.uid, text: txt, ts: Date.now()
+    });
+    i.value = '';
+  } catch(e){ toast(errMsg(e.code), true); }
+}
+
+async function sendChatMessage(){
+  const i = document.getElementById('chatInput');
+  if (!i) return;
+  const txt = i.value.trim();
+  if (!txt) return;
+  const cid = state.view.id;
+  try {
+    await addDoc(collection(db, 'chats', cid, 'messages'), {
+      authorId: state.fbUser.uid, text: txt, ts: Date.now()
+    });
+    await updateDoc(doc(db, 'chats', cid), {
+      lastMessage: txt, lastTs: Date.now(), lastAuthor: state.fbUser.uid
+    });
+    i.value = '';
+  } catch(e){ toast(errMsg(e.code), true); }
+}
+
+async function createGroup(){
+  const name = (document.getElementById('gName')?.value || '').trim();
+  if (!name){ toast(t('groupNameEmpty')); return; }
+  const checked = [...document.querySelectorAll('.pick input:checked')].map(i => i.value);
+  const members = [state.fbUser.uid, ...checked];
+  try {
+    await addDoc(collection(db, 'groups'), {
+      name, emoji: state.pendingEmoji, ownerId: state.fbUser.uid,
+      members, createdAt: Date.now()
+    });
+    state.modal = null;
+    state.pendingEmoji = '🎮';
+    toast(t('groupCreated'));
+  } catch(e){ toast(errMsg(e.code), true); }
+}
+
+async function addFriendById(fid){
+  if (fid === state.fbUser.uid) return;
+  try {
+    await updateDoc(doc(db, 'users', state.fbUser.uid), { friends: arrayUnion(fid) });
+    await updateDoc(doc(db, 'users', fid), { friends: arrayUnion(state.fbUser.uid) });
+    toast(t('friendAdded'));
+  } catch(e){ toast(errMsg(e.code), true); }
+}
+async function removeFriendById(fid){
+  try {
+    await updateDoc(doc(db, 'users', state.fbUser.uid), { friends: arrayRemove(fid) });
+    await updateDoc(doc(db, 'users', fid), { friends: arrayRemove(state.fbUser.uid) });
+  } catch(e){ toast(errMsg(e.code), true); }
+}
+
+async function addMemberToGroup(gid, uid){
+  try {
+    await updateDoc(doc(db, 'groups', gid), { members: arrayUnion(uid) });
+    toast(t('added'));
+  } catch(e){ toast(errMsg(e.code), true); }
+}
+
+async function kickMember(gid, uid){
+  if (!confirm(t('confirmKick'))) return;
+  try { await updateDoc(doc(db, 'groups', gid), { members: arrayRemove(uid) }); }
+  catch(e){ toast(errMsg(e.code), true); }
+}
+
+async function deleteGroup(gid){
+  if (!confirm(t('confirmDeleteGroup'))) return;
+  try {
+    await deleteDoc(doc(db, 'groups', gid));
+    state.view = { name: 'groups', id: null };
+    render();
+  } catch(e){ toast(errMsg(e.code), true); }
+}
+
+async function openPrivateChat(otherUid){
+  const cid = [state.fbUser.uid, otherUid].sort().join('__');
+  const ref = doc(db, 'chats', cid);
+  const snap = await getDoc(ref);
+  if (!snap.exists()){
+    await setDoc(ref, {
+      members: [state.fbUser.uid, otherUid],
+      createdAt: Date.now()
+    });
+  }
+  state.view = { name: 'chat', id: cid };
+  subscribeChat(cid);
+  render();
+}
+
+async function updateMyName(newName){
+  try {
+    await updateDoc(doc(db, 'users', state.fbUser.uid), { name: newName });
+    toast(t('nameUpdated'));
+  } catch(e){ toast(errMsg(e.code), true); }
+}
+async function updateMyAvatar(dataUrl){
+  try {
+    await updateDoc(doc(db, 'users', state.fbUser.uid), { avatar: dataUrl });
+    toast(t('avatarUpdated'));
+  } catch(e){ toast(errMsg(e.code), true); }
+}
+
+/* ═══════════ Render ═══════════ */
+function render(){
+  const app = $('#app');
+  $('#loading').classList.add('hidden');
+
+  if (!state.fbUser){
+    app.innerHTML = renderAuth() + (state.modal ? modalHtml() : '');
+    afterRender();
+    return;
+  }
+
+  if (!state.profile){
+    app.innerHTML = `<div class="loading-overlay"><div class="spinner"></div></div>`;
+    return;
+  }
+
+  app.innerHTML = `
+    <div class="shell">
+      ${sidebar()}
+      <main class="main">
+        ${topbar()}
+        ${!state.fbUser.emailVerified ? verifyBanner() : ''}
+        ${renderView()}
+      </main>
+    </div>
+    ${state.modal ? modalHtml() : ''}
+  `;
+  afterRender();
+}
+
+function verifyBanner(){
+  return `<div class="verify-banner">
+    <span class="vb-icon">📧</span>
+    <div class="vb-text">
+      <b>${t('verifyTitle')}</b><br>
+      <span style="opacity:.85">${t('verifyText', { email: state.fbUser.email || '' })}</span>
+    </div>
+    <button class="btn sm ghost" data-act="resendVerify" style="color:#fbbf24;border-color:rgba(251,191,36,.3)">${t('verifyResend')}</button>
+    <button class="btn sm" data-act="refreshUser" style="background:rgba(251,191,36,.2);border-color:rgba(251,191,36,.4);color:#fbbf24">${t('verifyAlready')}</button>
+  </div>`;
+}
+
+function langToggle(){
+  return `<div class="lang-toggle">
+    <button class="${state.lang==='he'?'on':''}" data-act="setLang" data-lang="he">עב</button>
+    <button class="${state.lang==='en'?'on':''}" data-act="setLang" data-lang="en">EN</button>
+  </div>`;
+}
+
+function renderAuth(){
+  const m = state.ui.authMode;
+  let body = '';
+  if (m === 'login'){
+    body = `
+      <div class="form-stack">
+        <input class="input" id="aEmail" type="email" placeholder="${t('email')}" autocomplete="email" dir="ltr">
+        <input class="input" id="aPass" type="password" placeholder="${t('password')}" autocomplete="current-password" dir="ltr">
+        <button class="btn primary" id="aLogin" style="padding:13px">${t('loginBtn')}</button>
+      </div>
+      <button class="auth-link" data-act="setAuth" data-mode="reset">${t('forgotPassword')}</button>
+      <div class="divider-or">${t('orSignInWith')}</div>
+      <button class="btn google" id="aGoogle" style="width:100%;padding:13px">
+        <svg viewBox="0 0 48 48" xmlns="http://www.w3.org/2000/svg"><path fill="#FFC107" d="M43.6 20.5H42V20H24v8h11.3C33.7 32.9 29.2 36 24 36c-6.6 0-12-5.4-12-12s5.4-12 12-12c3.1 0 5.9 1.2 8 3.1l5.7-5.7C34.1 6.1 29.3 4 24 4 12.9 4 4 12.9 4 24s8.9 20 20 20 20-8.9 20-20c0-1.3-.1-2.3-.4-3.5z"/><path fill="#FF3D00" d="M6.3 14.7l6.6 4.8C14.7 15.1 19 12 24 12c3.1 0 5.9 1.2 8 3.1l5.7-5.7C34.1 6.1 29.3 4 24 4 16.3 4 9.7 8.3 6.3 14.7z"/><path fill="#4CAF50" d="M24 44c5.2 0 9.9-2 13.4-5.2l-6.2-5.2C29.2 35.1 26.7 36 24 36c-5.2 0-9.6-3.1-11.3-7.6l-6.5 5C9.5 39.6 16.2 44 24 44z"/><path fill="#1976D2" d="M43.6 20.5H42V20H24v8h11.3c-.8 2.2-2.2 4.1-4.1 5.5l6.2 5.2C41.2 35.1 44 30 44 24c0-1.3-.1-2.3-.4-3.5z"/></svg>
+        ${t('googleSignIn')}
+      </button>
+      <div style="height:6px"></div>
+      <button class="auth-link" data-act="setAuth" data-mode="signup">${t('noAccount')}</button>
+    `;
+  } else if (m === 'signup'){
+    body = `
+      <label class="avatar-pick">
+        <img id="avatarPreview" src="${state.pendingAvatar || avatarFor('?')}" alt="">
+        <span class="cam">📷</span>
+        <input type="file" id="avatarInput" accept="image/*" hidden>
+      </label>
+      <div class="form-stack">
+        <input class="input" id="aName" placeholder="${t('name')}" maxlength="18" autocomplete="nickname">
+        <input class="input" id="aEmail" type="email" placeholder="${t('email')}" autocomplete="email" dir="ltr">
+        <input class="input" id="aPass" type="password" placeholder="${t('password')}" autocomplete="new-password" dir="ltr">
+        <button class="btn primary" id="aSignup" style="padding:13px">${t('signupBtn')}</button>
+      </div>
+      <div class="divider-or">${t('orSignInWith')}</div>
+      <button class="btn google" id="aGoogle" style="width:100%;padding:13px">
+        <svg viewBox="0 0 48 48" xmlns="http://www.w3.org/2000/svg"><path fill="#FFC107" d="M43.6 20.5H42V20H24v8h11.3C33.7 32.9 29.2 36 24 36c-6.6 0-12-5.4-12-12s5.4-12 12-12c3.1 0 5.9 1.2 8 3.1l5.7-5.7C34.1 6.1 29.3 4 24 4 12.9 4 4 12.9 4 24s8.9 20 20 20 20-8.9 20-20c0-1.3-.1-2.3-.4-3.5z"/><path fill="#FF3D00" d="M6.3 14.7l6.6 4.8C14.7 15.1 19 12 24 12c3.1 0 5.9 1.2 8 3.1l5.7-5.7C34.1 6.1 29.3 4 24 4 16.3 4 9.7 8.3 6.3 14.7z"/><path fill="#4CAF50" d="M24 44c5.2 0 9.9-2 13.4-5.2l-6.2-5.2C29.2 35.1 26.7 36 24 36c-5.2 0-9.6-3.1-11.3-7.6l-6.5 5C9.5 39.6 16.2 44 24 44z"/><path fill="#1976D2" d="M43.6 20.5H42V20H24v8h11.3c-.8 2.2-2.2 4.1-4.1 5.5l6.2 5.2C41.2 35.1 44 30 44 24c0-1.3-.1-2.3-.4-3.5z"/></svg>
+        ${t('googleSignIn')}
+      </button>
+      <button class="auth-link" data-act="setAuth" data-mode="login">${t('hasAccount')}</button>
+    `;
+  } else {
+    body = `
+      <div class="form-stack">
+        <input class="input" id="aEmail" type="email" placeholder="${t('email')}" autocomplete="email" dir="ltr">
+        <button class="btn primary" id="aReset" style="padding:13px">${t('sendReset')}</button>
+      </div>
+      <button class="auth-link" data-act="setAuth" data-mode="login">${t('backToLogin')}</button>
+    `;
+  }
+
+  const title = m === 'signup' ? t('createAccount') : m === 'reset' ? t('resetPassword') : t('welcomeBack');
+
+  return `<div class="auth">
+    <div class="auth-card">
+      ${langToggle()}
+      <div class="auth-logo">AURA</div>
+      <div class="auth-sub">${t('tagline')}</div>
+      <h2 style="font-size:18px;font-weight:700;margin-bottom:20px;color:#cbd5e1">${title}</h2>
+      ${state.ui.error ? `<div class="error-box">${esc(state.ui.error)}</div>` : ''}
+      ${body}
+    </div>
+  </div>`;
+}
+
+function modalHtml(){
+  if (state.modal === 'group'){
+    const friends = (state.profile.friends || []).map(id => state.users[id]).filter(Boolean);
+    return `<div class="modal-back" data-act="closeModal"><div class="modal">
+      <h2>${t('createGroup')} 🎮</h2>
+      <input class="input" id="gName" placeholder="${t('groupName')}" maxlength="24">
+      <div class="sub-label">${t('chooseEmoji')}</div>
+      <div class="emoji-row">
+        ${['🎮','🔥','⚡','💀','🚀','🎯','👑','🐉','🎧','🕹️'].map(e =>
+          `<button class="emoji-opt ${state.pendingEmoji===e?'on':''}" data-act="pickEmoji" data-e="${e}">${e}</button>`
+        ).join('')}
+      </div>
+      <div class="sub-label">${t('chooseMembers')}</div>
+      <div class="pick-list">
+        ${friends.length ? friends.map(f =>
+          `<label class="pick"><input type="checkbox" value="${f.id}"><img src="${f.avatar}"><span>${esc(f.name)}</span></label>`
+        ).join('') : `<p class="muted" style="padding:8px 0">${t('noFriendsYet')}</p>`}
+      </div>
+      <div class="modal-actions">
+        <button class="btn ghost" data-act="closeModal">✕</button>
+        <button class="btn primary" data-act="confirmGroup">${t('createGroup')}</button>
+      </div>
+    </div></div>`;
+  }
+  if (state.modal === 'publicProfile' && state.profileView){
+    const u = state.profileView;
+    const a = totalAuraFor(u.id);
+    const isFriend = (state.profile.friends || []).includes(u.id);
+    const isMe = u.id === state.fbUser.uid;
+    return `<div class="modal-back" data-act="closeModal"><div class="modal" style="text-align:center">
+      <img class="av lg" src="${u.avatar}" alt="" style="margin:0 auto 12px">
+      <h2 style="font-size:22px;margin-bottom:4px">${esc(u.name)}</h2>
+      <div class="muted" style="margin-bottom:16px">${(u.friends||[]).length} ${t('friendCount')((u.friends||[]).length).split(' ').slice(1).join(' ')}</div>
+      <div class="aura-big ${a<0?'neg':''}" style="font-size:18px;margin-bottom:20px">⚡ ${a} ${t('auraLabel')}</div>
+      ${!isMe ? `
+        <div class="modal-actions">
+          ${!isFriend ? `<button class="btn primary" data-act="addFriendFromModal" data-id="${u.id}">${t('addFriend')}</button>`
+            : `<button class="btn ghost" data-act="removeFriendFromModal" data-id="${u.id}">${t('removeFriend')}</button>`}
+          <button class="btn primary" data-act="openPrivate" data-id="${u.id}">💬</button>
+        </div>
+      ` : ''}
+      <button class="btn ghost" data-act="closeModal" style="width:100%;margin-top:10px">${t('closeProfile')}</button>
+    </div></div>`;
+  }
+  return '';
+}
+
+function topbar(){
+  const a = totalAura();
+  return `<div class="topbar">
+    <div class="brand"><span class="mark">◈</span><span class="txt">AURA</span></div>
+    ${langToggle()}
+    <div class="aura-badge ${a<0?'neg':''}">⚡ <b>${a}</b></div>
+  </div>`;
+}
+
+function sidebar(){
+  const u = state.profile;
+  const a = totalAura();
+  const items = [
+    ['feed', '🏠', t('navFeed')],
+    ['friends', '👥', t('navFriends')],
+    ['groups', '🎮', t('navGroups')],
+    ['chats', '💬', t('navChats')],
+    ['profile', '👤', t('navProfile')]
+  ];
+  return `<aside class="sidebar">
+    <div class="brand"><span class="mark">◈</span><span class="txt">AURA</span></div>
+    <nav class="nav">
+      ${items.map(([v, i, l]) =>
+        `<button class="nav-item ${state.view.name===v?'active':''}" data-act="nav" data-view="${v}">
+          <span class="ni">${i}</span><span>${l}</span>
+        </button>`
+      ).join('')}
+    </nav>
+    <div class="me-card">
+      <img class="av" src="${u.avatar}">
+      <div class="me-info">
+        <div class="me-name">${esc(u.name)}${state.fbUser.emailVerified?' <span class="verified-badge">✓</span>':''}</div>
+        <div class="me-aura" style="${a<0?'color:#ff8aa0':''}">⚡ ${a} ${t('auraLabel')}</div>
+      </div>
+      <button class="icon-btn" data-act="logout" title="${t('logout')}">⏏</button>
+    </div>
+  </aside>`;
+}
+
+function totalAura(){
+  return Object.keys(state.groups).reduce((s, gid) => s + groupAuraLocal(gid, state.fbUser.uid), 0);
+}
+
+function renderView(){
+  switch (state.view.name){
+    case 'feed': return viewFeed();
+    case 'friends': return viewFriends();
+    case 'groups': return viewGroups();
+    case 'chats': return viewChats();
+    case 'profile': return viewProfile();
+    case 'group': return viewGroupDetail();
+    case 'chat': return viewChatDetail();
+    default: return viewFeed();
+  }
+}
+
+function emptyBox(icon, title, sub, btn, act){
+  return `<div class="empty">
+    <div class="empty-ic">${icon}</div>
+    <h3>${title}</h3>
+    <p class="muted">${sub || ''}</p>
+    ${btn ? `<button class="btn primary" data-act="${act}">${btn}</button>` : ''}
+  </div>`;
+}
+
+function viewFeed(){
+  const myGroups = Object.values(state.groups);
+  const posts = [];
+  myGroups.forEach(g => {
+    Object.values(state.groupPosts[g.id] || {}).forEach(p => posts.push({ p, g }));
+  });
+  posts.sort((a, b) => b.p.ts - a.p.ts);
+
+  return `<div class="page-head">
+      <div><h1>${t('feedTitle')}</h1><p>${t('feedSub')}</p></div>
+      <button class="btn primary sm" data-act="openModal">${t('newGroup')}</button>
+    </div>
+    ${posts.length
+      ? `<div class="feed">${posts.map(({p, g}) => postCard(p, g)).join('')}</div>`
+      : emptyBox('✨', t('emptyFeedTitle'), t('emptyFeedSub'), t('createGroup'), 'openModal')}`;
+}
+
+function postCard(p, g){
+  const author = state.users[p.authorId];
+  const total = Object.values(p.ratings || {}).reduce((a, b) => a + b, 0);
+  const mine = (p.ratings || {})[state.fbUser.uid] || 0;
+  const isMine = p.authorId === state.fbUser.uid;
+  const isGroupOwner = g.ownerId === state.fbUser.uid;
+  const canDelete = isMine || isGroupOwner;
+  const comments = Array.isArray(p.comments) ? p.comments : [];
+  const commentsOpen = !!state.openComments[p.id];
+  const isVerified = author?.id && state.users[author.id];
+  const verifiedTick = isVerified && p.authorId === state.fbUser.uid && state.fbUser.emailVerified ? ' <span class="verified-badge">✓</span>' : '';
+
+  return `<article class="post">
+    <header class="post-head">
+      <img class="av" src="${author?.avatar || ''}" alt="">
+      <div class="post-meta">
+        <div class="post-author" data-act="showProfile" data-id="${p.authorId}">
+          ${esc(author?.name || '?')}${isMine ? `<span class="you">${t('youLabel')}</span>` : ''}${isMine ? verifiedTick : ''}
+        </div>
+        <div class="post-sub">
+          <span class="grp-badge" data-act="openGroup" data-id="${g.id}">${g.emoji} ${esc(g.name)}</span>
+          <span>${timeAgo(p.ts)}</span>
+        </div>
+      </div>
+      ${canDelete ? `<button class="icon-btn" data-act="delPost" data-id="${p.id}" data-group="${g.id}" title="${t('deletePost')}">🗑</button>` : ''}
+    </header>
+    ${p.src ? `<div class="post-media">${
+      p.kind === 'video'
+        ? `<video src="${p.src}" controls playsinline preload="metadata"></video>`
+        : `<img src="${p.src}" loading="lazy" alt="">`
+    }</div>` : ''}
+    ${p.caption ? `<p class="post-caption">${esc(p.caption)}</p>` : ''}
+    <footer class="post-foot">
+      <div class="aura-badge ${total<0?'neg':''}">⚡ <b>${total}</b> ${t('auraLabel')}</div>
+      <div class="rate-row">
+        ${[-100,-50,-25,-10].map(v =>
+          `<button class="rate down ${mine===v?'on':''}" data-act="rate" data-post="${p.id}" data-group="${g.id}" data-val="${v}">${v}</button>`
+        ).join('')}
+        ${[10,25,50,100].map(v =>
+          `<button class="rate ${mine===v?'on':''}" data-act="rate" data-post="${p.id}" data-group="${g.id}" data-val="${v}">+${v}</button>`
+        ).join('')}
+        <button class="comments-toggle" data-act="toggleComments" data-id="${p.id}">
+          💬 ${t('commentsLabel')} (${comments.length})
+        </button>
+      </div>
+    </footer>
+    ${commentsOpen ? `
+      <div class="comments-section">
+        ${comments.length ? `
+          <div class="comments-list">
+            ${comments.map(c => {
+              const cu = state.users[c.authorId];
+              const canDel = c.authorId === state.fbUser.uid || isGroupOwner;
+              return `<div class="comment">
+                <img class="av sm" src="${cu?.avatar || ''}" alt="" data-act="showProfile" data-id="${c.authorId}" style="cursor:pointer">
+                <div class="comment-body">
+                  <div class="comment-author" data-act="showProfile" data-id="${c.authorId}">${esc(cu?.name || '?')}</div>
+                  <div class="comment-text">${esc(c.text)}</div>
+                  <span class="comment-time">${timeAgo(c.ts)}</span>
+                  ${canDel ? `<button class="comment-del" data-act="delComment" data-g="${g.id}" data-p="${p.id}" data-c="${c.id}">✕</button>` : ''}
+                </div>
+              </div>`;
+            }).join('')}
+          </div>
+        ` : `<div class="muted" style="text-align:center;padding:14px 0;font-size:13px">${t('noComments')}</div>`}
+        <div class="comment-input-row">
+          <input class="comment-input" id="commentInput-${p.id}" placeholder="${t('addComment')}" autocomplete="off">
+          <button class="btn primary comment-send" data-act="sendComment" data-g="${g.id}" data-p="${p.id}">${t('commentSend')}</button>
+        </div>
+      </div>
+    ` : ''}
+  </article>`;
+}
+
+function viewGroups(){
+  const mine = Object.values(state.groups);
+  return `<div class="page-head">
+      <div><h1>${t('myGroups')}</h1><p>${t('groupsCount')(mine.length)}</p></div>
+      <button class="btn primary sm" data-act="openModal">${t('newGroup')}</button>
+    </div>
+    ${mine.length
+      ? `<div class="grid">${mine.map(g => groupCard(g)).join('')}</div>`
+      : emptyBox('🎮', t('emptyGroupsTitle'), t('emptyGroupsSub'), t('createGroup'), 'openModal')}`;
+}
+
+function groupCard(g){
+  const total = g.members.reduce((s, m) => s + groupAuraLocal(g.id, m), 0);
+  const mems = g.members.map(id => state.users[id]).filter(Boolean).slice(0, 4);
+  return `<div class="gcard" data-act="openGroup" data-id="${g.id}">
+    <div class="gcard-emoji">${g.emoji}</div>
+    <div class="gcard-name">${esc(g.name)}</div>
+    <div class="gcard-sub">${t('membersCount')(g.members.length)} · ${t('postsCount')(Object.keys(state.groupPosts[g.id] || {}).length)}</div>
+    <div class="gcard-foot">
+      <div class="stack">${mems.map(m => `<img src="${m.avatar}">`).join('')}</div>
+      <div class="gcard-aura" style="${total<0?'color:#ff8aa0':''}">⚡ ${total}</div>
+    </div>
+  </div>`;
+}
+
+function viewGroupDetail(){
+  const g = state.groups[state.view.id];
+  if (!g) return emptyBox('😕', t('groupNotFound'), '', '', '');
+  const total = g.members.reduce((s, m) => s + groupAuraLocal(g.id, m), 0);
+  const isOwner = g.ownerId === state.fbUser.uid;
+  const tabs = [['feed', t('feedTab')], ['chat', t('chatTab')], ['rank', t('rankTab')], ['members', t('membersTab')]];
+  let body = '';
+  if (state.gTab === 'feed') body = groupFeed(g);
+  else if (state.gTab === 'chat') body = groupChat(g);
+  else if (state.gTab === 'rank') body = groupRank(g);
+  else body = groupMembers(g);
+
+  return `<button class="back" data-act="nav" data-view="groups">${t('allGroups')}</button>
+    <div class="group-hero">
+      <div class="gh-emoji">${g.emoji}</div>
+      <div class="gh-info">
+        <h1>${esc(g.name)}${isOwner ? `<span class="admin-badge">${t('adminLabel')}</span>` : ''}</h1>
+        <p>${t('membersCount')(g.members.length)} · ${t('postsCount')(Object.keys(state.groupPosts[g.id]||{}).length)} · <span style="${total<0?'color:#ff8aa0':''}">${t('groupAura')(total)}</span></p>
+      </div>
+    </div>
+    <div class="tabs">
+      ${tabs.map(([k, l]) => `<button class="tab ${state.gTab===k?'on':''}" data-act="gtab" data-tab="${k}">${l}</button>`).join('')}
+    </div>
+    <div class="tab-body">${body}</div>`;
+}
+
+function groupFeed(g){
+  const posts = Object.values(state.groupPosts[g.id] || {}).sort((a, b) => b.ts - a.ts);
+  return `<div class="composer">
+      <img class="av" src="${state.profile.avatar}" alt="">
+      <div class="composer-body">
+        <textarea id="capInput" placeholder="${t('whatUp')}"></textarea>
+        <div class="composer-actions">
+          <label class="btn ghost sm" style="cursor:pointer">${t('addMedia')}<input type="file" id="postFile" accept="image/*,video/*" hidden></label>
+          <span class="file-name" id="fileName"></span>
+          <div class="spacer"></div>
+          <button class="btn primary sm" id="publishBtn">${t('publish')}</button>
+        </div>
+      </div>
+    </div>
+    ${posts.length
+      ? `<div class="feed">${posts.map(p => postCard(p, g)).join('')}</div>`
+      : `<div class="empty" style="padding:40px 20px"><div class="empty-ic">🎬</div><h3>${t('noPostsTitle')}</h3><p class="muted">${t('noPostsSub')}</p></div>`}`;
+}
+
+function groupChat(g){
+  const msgs = Object.values(state.groupMessages[g.id] || {}).sort((a, b) => a.ts - b.ts);
+  return `<div class="chat-scroll" id="chatScroll">
+      ${msgs.length ? msgs.map(m => msgBubble(m)).join('') : `<div class="chat-day">${t('startChatGroup')}</div>`}
+    </div>
+    <div class="chat-input-row">
+      <input class="input" id="chatInput" placeholder="${t('writeMessage')}" autocomplete="off">
+      <button class="btn primary" id="chatSend">${t('send')}</button>
+    </div>`;
+}
+
+function groupRank(g){
+  const ranked = g.members
+    .map(id => ({ u: state.users[id], aura: groupAuraLocal(g.id, id) }))
+    .filter(x => x.u)
+    .sort((a, b) => b.aura - a.aura);
+  const max = Math.max(1, ...ranked.map(r => Math.abs(r.aura)));
+  const medals = ['🥇','🥈','🥉'];
+
+  return `<div class="rank-list">
+    ${ranked.map((r, i) => {
+      const pct = Math.max(0, Math.min(100, Math.round(Math.abs(r.aura) / max * 100)));
+      return `<div class="rank-row ${i<3?'top':''}">
+        <div class="rank-pos">${medals[i] || '#'+(i+1)}</div>
+        <img class="av" src="${r.u.avatar}" alt="">
+        <div class="rank-info">
+          <div class="rank-name">${esc(r.u.name)}${r.u.id===state.fbUser.uid?`<span class="you">${t('youLabel')}</span>`:''}</div>
+          <div class="rank-bar"><span class="${r.aura<0?'neg':''}" style="width:${pct}%"></span></div>
+        </div>
+        <div class="rank-aura ${r.aura<0?'neg':''}">⚡ ${r.aura}</div>
+      </div>`;
+    }).join('')}
+  </div>`;
+}
+
+function groupMembers(g){
+  const isOwner = g.ownerId === state.fbUser.uid;
+  const myFriends = (state.profile.friends || []).map(id => state.users[id]).filter(Boolean);
+  const nonMembers = myFriends.filter(f => !g.members.includes(f.id));
+
+  return `<div class="list" style="margin-bottom:18px">
+      ${g.members.map(id => state.users[id]).filter(Boolean).map(m => {
+        const isM = m.id === state.fbUser.uid;
+        const isGroupOwner = m.id === g.ownerId;
+        return `<div class="row" style="cursor:default">
+          <img class="av" src="${m.avatar}" alt="">
+          <div class="row-info">
+            <div class="row-name">
+              ${esc(m.name)}
+              ${isM ? `<span class="you">${t('youLabel')}</span>` : ''}
+              ${isGroupOwner ? `<span class="admin-badge">${t('adminLabel')}</span>` : ''}
+            </div>
+            <div class="row-sub">⚡ ${groupAuraLocal(g.id, m.id)} ${t('auraLabel')}</div>
+          </div>
+          <div class="row-action">
+            ${!isM ? `<button class="btn sm ghost" data-act="openPrivate" data-id="${m.id}">💬</button>` : ''}
+            ${isOwner && !isM ? `<button class="btn sm danger" data-act="kickMember" data-g="${g.id}" data-id="${m.id}">${t('kickMember')}</button>` : ''}
+          </div>
+        </div>`;
+      }).join('')}
+    </div>
+    ${isOwner && nonMembers.length ? `
+      <div class="sub-label" style="margin-bottom:10px">${t('addMembersTitle')}</div>
+      <div class="list">
+        ${nonMembers.map(f => `
+          <div class="row" style="cursor:default">
+            <img class="av" src="${f.avatar}" alt="">
+            <div class="row-info"><div class="row-name">${esc(f.name)}</div></div>
+            <button class="btn sm primary row-action" data-act="groupAdd" data-g="${g.id}" data-id="${f.id}">${t('addToGroup')}</button>
+          </div>`).join('')}
+      </div>` : ''}
+    ${isOwner ? `
+      <button class="btn danger" style="margin-top:20px;width:100%" data-act="deleteGroup" data-g="${g.id}">
+        🗑 ${t('deleteGroup')}
+      </button>` : ''}`;
+}
+
+function viewFriends(){
+  const u = state.profile;
+  const friends = (u.friends || []).map(id => state.users[id]).filter(Boolean);
+  const allOthers = Object.values(state.users).filter(x =>
+    x.id !== u.id && !(u.friends || []).includes(x.id)
+  );
+
+  const q = (state.searchQuery || '').trim().toLowerCase();
+  const filteredFriends = q
+    ? friends.filter(f => (f.name || '').toLowerCase().includes(q) || (f.email || '').toLowerCase().includes(q))
+    : friends;
+  const filteredOthers = q
+    ? allOthers.filter(o => (o.name || '').toLowerCase().includes(q) || (o.email || '').toLowerCase().includes(q))
+    : allOthers;
+
+  return `<div class="page-head">
+      <div><h1>${t('friendsTitle')}</h1><p>${t('friendCount')(friends.length)}</p></div>
+    </div>
+    <div class="search-box">
+      <span class="search-ic">🔍</span>
+      <input class="input" id="userSearch" placeholder="${t('searchPlaceholder')}" value="${esc(state.searchQuery)}" autocomplete="off">
+    </div>
+    ${filteredFriends.length ? `<div class="list" style="margin-bottom:28px">
+      ${filteredFriends.map(f => `
+        <div class="row">
+          <img class="av" src="${f.avatar}" alt="" data-act="showProfile" data-id="${f.id}" style="cursor:pointer">
+          <div class="row-info" data-act="openPrivate" data-id="${f.id}">
+            <div class="row-name">${esc(f.name)}</div>
+            <div class="row-sub">⚡ ${totalAuraFor(f.id)} ${t('auraLabel')}</div>
+          </div>
+          <button class="btn sm ghost row-action" data-act="removeFriend" data-id="${f.id}">${t('removeFriend')}</button>
+        </div>`).join('')}
+    </div>` : q ? `<p class="muted" style="text-align:center;padding:20px">${t('searchNoResults')}</p>`
+      : emptyBox('👥', t('emptyFriendsTitle'), t('emptyFriendsSub'), '', '')}
+    ${filteredOthers.length ? `
+      <div class="sub-label" style="margin:0 0 12px">${t('suggestedGamers')}</div>
+      <div class="list">
+        ${filteredOthers.map(o => `
+          <div class="row" style="cursor:default">
+            <img class="av" src="${o.avatar}" alt="" data-act="showProfile" data-id="${o.id}" style="cursor:pointer">
+            <div class="row-info">
+              <div class="row-name">${esc(o.name)}</div>
+              <div class="row-sub">⚡ ${totalAuraFor(o.id)} ${t('auraLabel')}</div>
+            </div>
+            <button class="btn sm primary row-action" data-act="addFriend" data-id="${o.id}">${t('addFriend')}</button>
+          </div>`).join('')}
+      </div>` : (q && !filteredFriends.length ? '' : '')}`;
+}
+
+function totalAuraFor(uid){
+  return Object.keys(state.groups).reduce((s, gid) => {
+    const g = state.groups[gid];
+    if (!g.members.includes(uid)) return s;
+    return s + groupAuraLocal(gid, uid);
+  }, 0);
+}
+
+function viewChats(){
+  const myChats = Object.values(state.chats)
+    .filter(c => (c.lastTs || 0) > 0)
+    .sort((a, b) => (b.lastTs || 0) - (a.lastTs || 0));
+
+  return `<div class="page-head">
+      <div><h1>${t('chatsTitle')}</h1><p>${t('chatsSub')}</p></div>
+      <button class="btn primary sm" data-act="nav" data-view="friends">${t('newChat')}</button>
+    </div>
+    ${myChats.length ? `<div class="list">
+      ${myChats.map(c => {
+        const otherId = c.members.find(m => m !== state.fbUser.uid);
+        const other = state.users[otherId];
+        if (!other) return '';
+        const prefix = c.lastAuthor === state.fbUser.uid ? `${t('youLabel')}: ` : '';
+        return `<div class="row" data-act="openChat" data-id="${c.id}">
+          <img class="av" src="${other.avatar}" alt="">
+          <div class="row-info">
+            <div class="row-name">${esc(other.name)}</div>
+            <div class="row-sub">${prefix}${esc(c.lastMessage || '')}</div>
+          </div>
+          <div class="row-sub" style="flex-shrink:0">${timeAgo(c.lastTs)}</div>
+        </div>`;
+      }).join('')}
+    </div>` : emptyBox('💬', t('emptyChatsTitle'), t('emptyChatsSub'), t('toFriends'), 'nav')}`;
+}
+
+function viewChatDetail(){
+  const c = state.chats[state.view.id];
+  if (!c) return emptyBox('😕', t('groupNotFound'), '', t('backToChats'), 'nav');
+  const otherId = c.members.find(m => m !== state.fbUser.uid);
+  const other = state.users[otherId];
+  const msgs = Object.values(state.chatMessages[c.id] || {}).sort((a, b) => a.ts - b.ts);
+
+  return `<button class="back" data-act="nav" data-view="chats">${t('backToChats')}</button>
+    <div class="page-head" style="margin-bottom:16px">
+      <div style="display:flex;align-items:center;gap:12px">
+        <img class="av" src="${other?.avatar || ''}" alt="">
+        <div>
+          <h1 style="font-size:20px">${esc(other?.name || '?')}</h1>
+          <p>⚡ ${other ? totalAuraFor(other.id) : 0} ${t('auraLabel')}</p>
+        </div>
+      </div>
+    </div>
+    <div class="chat-scroll" id="chatScroll">
+      ${msgs.length ? msgs.map(m => msgBubble(m)).join('') : `<div class="chat-day">${t('startPrivateChat')}</div>`}
+    </div>
+    <div class="chat-input-row">
+      <input class="input" id="chatInput" placeholder="${t('writeMessage')}" autocomplete="off">
+      <button class="btn primary" id="chatSend">${t('send')}</button>
+    </div>`;
+}
+
+function msgBubble(m){
+  const mine = m.authorId === state.fbUser.uid;
+  const a = state.users[m.authorId];
+  return `<div class="msg ${mine?'mine':''}">
+    ${!mine ? `<img class="av sm" src="${a?.avatar || ''}" alt="">` : ''}
+    <div class="bubble">${esc(m.text)}<span class="msg-time">${clockTime(m.ts)}</span></div>
+  </div>`;
+}
+
+function viewProfile(){
+  const u = state.profile;
+  const a = totalAura();
+  const myGroups = Object.values(state.groups);
+  const myPosts = Object.values(state.groupPosts).reduce((s, posts) =>
+    s + Object.values(posts).filter(p => p.authorId === u.id).length, 0);
+
+  return `<div class="page-head"><div><h1>${t('profileTitle')}</h1></div></div>
+    <div class="profile-card">
+      <label class="avatar-pick" style="width:104px;height:104px">
+        <img class="av lg" id="avatarPreview" src="${u.avatar}" alt="">
+        <span class="cam">📷</span>
+        <input type="file" id="avatarInput" accept="image/*" hidden>
+      </label>
+      <div class="profile-name">${esc(u.name)}${state.fbUser.emailVerified?' <span class="verified-badge" title="מאומת">✓</span>':''}</div>
+      <div class="muted">${t('friendCount')((u.friends||[]).length)} · ${t('groupsCount')(myGroups.length)}</div>
+      <div class="aura-big ${a<0?'neg':''}">⚡ ${a} ${t('auraLabel')}</div>
+    </div>
+    <div class="stats">
+      <div class="stat"><b>${a}</b><span>${t('totalAura')}</span></div>
+      <div class="stat"><b>${myPosts}</b><span>${t('postsStat')}</span></div>
+      <div class="stat"><b>${myGroups.length}</b><span>${t('groupsStat')}</span></div>
+    </div>
+    <div class="list">
+      <div class="row" style="cursor:default">
+        <div class="row-info">
+          <div class="row-name">${t('editName')}</div>
+          <div class="row-sub">${t('changeNameHint')}</div>
+        </div>
+      </div>
+      <div style="display:flex;gap:10px;padding:0 4px">
+        <input class="input" id="editName" value="${esc(u.name)}" maxlength="18">
+        <button class="btn primary" id="saveName">${t('save')}</button>
+      </div>
+      <div class="row" style="cursor:default;margin-top:14px">
+        <div class="row-info">
+          <div class="row-name">${t('switchLang')}</div>
+          <div class="row-sub">${t('langName')}</div>
+        </div>
+        <button class="btn sm ghost row-action" data-act="setLang" data-lang="${state.lang==='he'?'en':'he'}">${t('switchLang')}</button>
+      </div>
+      <button class="btn ghost" data-act="logout" style="margin-top:12px">${t('logout')} ⏏</button>
+    </div>`;
+}
+
+/* ═══════════ After render ═══════════ */
+function afterRender(){
+  const ai = document.getElementById('avatarInput');
+  if (ai) ai.addEventListener('change', async e => {
+    const f = e.target.files[0]; if (!f) return;
+    if (!f.type.startsWith('image/')){ toast(t('imageOnly'), true); ai.value=''; return; }
+    try {
+      const compressed = await compressImage(f, 400, 0.8);
+      const prev = document.getElementById('avatarPreview');
+      if (prev) prev.src = compressed;
+      if (state.fbUser && state.view.name === 'profile') await updateMyAvatar(compressed);
+      else state.pendingAvatar = compressed;
+    } catch(err){ toast(errMsg(err.code), true); }
+  });
+
+  const sb = document.getElementById('aSignup');
+  if (sb) sb.addEventListener('click', async () => {
+    const name = (document.getElementById('aName')?.value || '').trim();
+    const email = (document.getElementById('aEmail')?.value || '').trim();
+    const pass = document.getElementById('aPass')?.value || '';
+    if (!name){ state.ui.error = t('errNameEmpty'); render(); return; }
+    if (!email){ state.ui.error = t('errEmailEmpty'); render(); return; }
+    if (!pass){ state.ui.error = t('errPassEmpty'); render(); return; }
+    state.ui.error = '';
+    $('#loading').classList.remove('hidden');
+    try {
+      await doSignup(name, email, pass);
+      if (state.pendingAvatar) await updateMyAvatar(state.pendingAvatar);
+      state.pendingAvatar = null;
+    } catch(e){
+      state.ui.error = errMsg(e.code);
+      $('#loading').classList.add('hidden');
+      render();
+    }
+  });
+
+  const lb = document.getElementById('aLogin');
+  if (lb) lb.addEventListener('click', async () => {
+    const email = (document.getElementById('aEmail')?.value || '').trim();
+    const pass = document.getElementById('aPass')?.value || '';
+    if (!email){ state.ui.error = t('errEmailEmpty'); render(); return; }
+    if (!pass){ state.ui.error = t('errPassEmpty'); render(); return; }
+    state.ui.error = '';
+    $('#loading').classList.remove('hidden');
+    try { await doLogin(email, pass); }
+    catch(e){
+      state.ui.error = errMsg(e.code);
+      $('#loading').classList.add('hidden');
+      render();
+    }
+  });
+
+  const gb = document.getElementById('aGoogle');
+  if (gb) gb.addEventListener('click', async () => {
+    state.ui.error = '';
+    $('#loading').classList.remove('hidden');
+    try { await doGoogleLogin(); }
+    catch(e){
+      state.ui.error = errMsg(e.code);
+      $('#loading').classList.add('hidden');
+      render();
+    }
+  });
+
+  const rb = document.getElementById('aReset');
+  if (rb) rb.addEventListener('click', async () => {
+    const email = (document.getElementById('aEmail')?.value || '').trim();
+    if (!email){ state.ui.error = t('errEmailEmpty'); render(); return; }
+    state.ui.error = '';
+    try {
+      await doReset(email);
+      toast(t('resetSent'));
+      state.ui.authMode = 'login';
+      render();
+    } catch(e){
+      state.ui.error = errMsg(e.code);
+      render();
+    }
+  });
+
+  document.querySelectorAll('.auth .input').forEach(inp => {
+    inp.addEventListener('keydown', e => {
+      if (e.key !== 'Enter') return;
+      e.preventDefault();
+      if (state.ui.authMode === 'login') lb?.click();
+      else if (state.ui.authMode === 'signup') sb?.click();
+      else rb?.click();
+    });
+  });
+
+  const pf = document.getElementById('postFile');
+  if (pf) pf.addEventListener('change', async e => {
+    const f = e.target.files[0]; if (!f) return;
+    if (!f.type.startsWith('image/') && !f.type.startsWith('video/')){
+      toast(t('imageOnly'), true); pf.value=''; return;
+    }
+    const fn = document.getElementById('fileName');
+    if (fn) fn.textContent = t('uploading');
+    try {
+      if (f.type.startsWith('image/')){
+        const compressed = await compressImage(f, 1000, 0.7);
+        state.pendingPost = { src: compressed, kind: 'image' };
+      } else {
+        if (f.size > 900 * 1024){ toast(t('fileTooBig') + ' (900KB)', true); pf.value=''; if (fn) fn.textContent=''; return; }
+        const dataUrl = await readAsDataURL(f);
+        state.pendingPost = { src: dataUrl, kind: 'video' };
+      }
+      if (fn) fn.textContent = '✓ ' + f.name.slice(0, 22);
+    } catch(err){ toast(t('errGeneric'), true); if (fn) fn.textContent=''; }
+  });
+
+  const pb = document.getElementById('publishBtn');
+  if (pb) pb.addEventListener('click', publishPost);
+
+  const cs = document.getElementById('chatSend');
+  if (cs) cs.addEventListener('click', () => {
+    if (state.view.name === 'group') sendGroupMessage();
+    else if (state.view.name === 'chat') sendChatMessage();
+  });
+  const ci = document.getElementById('chatInput');
+  if (ci) ci.addEventListener('keydown', e => {
+    if (e.key === 'Enter' && !e.shiftKey){
+      e.preventDefault();
+      cs?.click();
+    }
+  });
+
+  // comments input - Enter to send
+  document.querySelectorAll('.comment-input').forEach(inp => {
+    const pid = inp.id.replace('commentInput-','');
+    inp.addEventListener('keydown', e => {
+      if (e.key === 'Enter' && !e.shiftKey){
+        e.preventDefault();
+        const gid = state.view.id;
+        if (state.view.name === 'group' || state.gTab === 'feed'){
+          addComment(gid, pid);
+        } else if (state.view.name === 'feed'){
+          // find group id
+          for (const g of Object.values(state.groups)){
+            if (state.groupPosts[g.id]?.[pid]){ addComment(g.id, pid); return; }
+          }
+        }
+      }
+    });
+  });
+
+  const cl = document.getElementById('chatScroll');
+  if (cl) cl.scrollTop = cl.scrollHeight;
+
+  const sn = document.getElementById('saveName');
+  if (sn) sn.addEventListener('click', async () => {
+    const v = (document.getElementById('editName')?.value || '').trim();
+    if (!v){ toast(t('errNameEmpty'), true); return; }
+    await updateMyName(v);
+  });
+
+  const us = document.getElementById('userSearch');
+  if (us){
+    us.addEventListener('input', e => {
+      state.searchQuery = e.target.value;
+      const cursorPos = e.target.selectionStart;
+      render();
+      const ni = document.getElementById('userSearch');
+      if (ni){
+        ni.focus();
+        ni.setSelectionRange(cursorPos, cursorPos);
+      }
+    });
+  }
+}
+
+/* ═══════════ Events ═══════════ */
+document.addEventListener('click', async e => {
+  const el = e.target.closest('[data-act]');
+  if (!el) return;
+  const act = el.dataset.act;
+
+  if (act === 'setLang'){
+    state.lang = el.dataset.lang;
+    localStorage.setItem('aura_lang', state.lang);
+    applyLang();
+    render();
+    return;
+  }
+
+  if (act === 'closeModal'){
+    if (el.classList.contains('modal-back') && e.target.closest('.modal')) return;
+    state.modal = null;
+    state.profileView = null;
+    render();
+    return;
+  }
+
+  if (act === 'setAuth'){
+    state.ui.authMode = el.dataset.mode;
+    state.ui.error = '';
+    render();
+    return;
+  }
+
+  switch (act){
+    case 'nav':
+      unsubscribeGroup();
+      if (state.currentChatUnsub){ try { state.currentChatUnsub(); } catch(e){} state.currentChatUnsub = null; }
+      state.view = { name: el.dataset.view, id: null };
+      state.gTab = 'feed';
+      state.pendingPost = null;
+      state.openComments = {};
+      render();
+      break;
+
+    case 'openGroup': {
+      unsubscribeGroup();
+      const gid = el.dataset.id;
+      state.view = { name: 'group', id: gid };
+      state.gTab = 'feed';
+      state.pendingPost = null;
+      state.openComments = {};
+      subscribeGroup(gid);
+      render();
+      break;
+    }
+
+    case 'gtab':
+      state.gTab = el.dataset.tab;
+      render();
+      break;
+
+    case 'openPrivate':
+      await openPrivateChat(el.dataset.id);
+      break;
+
+    case 'openChat': {
+      if (state.currentChatUnsub){ try { state.currentChatUnsub(); } catch(e){} state.currentChatUnsub = null; }
+      const cid = el.dataset.id;
+      state.view = { name: 'chat', id: cid };
+      subscribeChat(cid);
+      render();
+      break;
+    }
+
+    case 'openModal':
+      state.modal = 'group';
+      state.pendingEmoji = '🎮';
+      render();
+      break;
+
+    case 'pickEmoji':
+      state.pendingEmoji = el.dataset.e;
+      document.querySelectorAll('.emoji-opt').forEach(b =>
+        b.classList.toggle('on', b.dataset.e === state.pendingEmoji));
+      break;
+
+    case 'confirmGroup':
+      await createGroup();
+      break;
+
+    case 'logout':
+      await doLogout();
+      toast(t('loggedOut'));
+      break;
+
+    case 'addFriend':
+      await addFriendById(el.dataset.id);
+      break;
+
+    case 'removeFriend':
+      await removeFriendById(el.dataset.id);
+      break;
+
+    case 'addFriendFromModal':
+      await addFriendById(el.dataset.id);
+      state.modal = null;
+      state.profileView = null;
+      render();
+      break;
+
+    case 'removeFriendFromModal':
+      await removeFriendById(el.dataset.id);
+      state.modal = null;
+      state.profileView = null;
+      render();
+      break;
+
+    case 'groupAdd':
+      await addMemberToGroup(el.dataset.g, el.dataset.id);
+      break;
+
+    case 'kickMember':
+      await kickMember(el.dataset.g, el.dataset.id);
+      break;
+
+    case 'deleteGroup':
+      await deleteGroup(el.dataset.g);
+      break;
+
+    case 'rate':
+      await ratePost(el.dataset.group, el.dataset.post, Number(el.dataset.val));
+      break;
+
+    case 'delPost':
+      await deletePost(el.dataset.group, el.dataset.id);
+      break;
+
+    case 'toggleComments':
+      state.openComments[el.dataset.id] = !state.openComments[el.dataset.id];
+      render();
+      break;
+
+    case 'sendComment':
+      await addComment(el.dataset.g, el.dataset.p);
+      break;
+
+    case 'delComment':
+      await deleteComment(el.dataset.g, el.dataset.p, el.dataset.c);
+      break;
+
+    case 'resendVerify':
+      await resendVerification();
+      break;
+
+    case 'refreshUser':
+      await refreshUser();
+      break;
+
+    case 'showProfile': {
+      const uid2 = el.dataset.id;
+      const u = state.users[uid2];
+      if (u){
+        state.profileView = u;
+        state.modal = 'publicProfile';
+        render();
+      }
+      break;
+    }
+  }
+});
+
+/* ═══════════ Boot ═══════════ */
+onAuthStateChanged(auth, user => {
+  state.fbUser = user;
+  if (user){
+    state.ui.error = '';
+    state.view = { name: 'feed', id: null };
+    attachListeners(user.uid);
+  } else {
+    clearAllListeners();
+    state.profile = null;
+    state.users = {}; state.groups = {}; state.groupPosts = {}; state.groupMessages = {};
+    state.chats = {}; state.chatMessages = {};
+    state.openComments = {};
+    state.pendingAvatar = null;
+    render();
+  }
+});
+</script>
+</body>
+</html>
