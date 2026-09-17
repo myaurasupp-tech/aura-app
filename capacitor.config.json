@@ -4,6 +4,8 @@
   "webDir": "www",
   "bundledWebRuntime": false,
   "server": {
+    "url": "https://aura-gamers.netlify.app",
+    "cleartext": false,
     "androidScheme": "https"
   },
   "android": {
