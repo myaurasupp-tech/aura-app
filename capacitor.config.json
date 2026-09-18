@@ -4,12 +4,13 @@
   "webDir": "www",
   "bundledWebRuntime": false,
   "server": {
-    "url": "https://aura-gamers.netlify.app",
+    "url": "https://aura-gamers.netlify.app?v=1",
     "cleartext": false,
     "androidScheme": "https"
   },
   "android": {
     "allowMixedContent": true,
-    "webContentsDebuggingEnabled": false
+    "webContentsDebuggingEnabled": false,
+    "captureInput": true
   }
 }
