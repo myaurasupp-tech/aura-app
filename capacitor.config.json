@@ -7,7 +7,7 @@
     "url": "https://aura-gamers.netlify.app",
     "cleartext": false,
     "androidScheme": "https",
-    "errorPath": "index.html"        ← 🆕 השורה החדשה
+    "errorPath": "index.html"
   },
   "android": {
     "allowMixedContent": false,
