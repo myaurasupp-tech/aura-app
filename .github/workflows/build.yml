@@ -45,6 +45,22 @@ jobs:
       - name: Patch camera + microphone permissions
         run: bash scripts/patch-android.sh
 
+      # 🔊 צליל ההתראה 'aura_ping'. שם הקובץ חייב להיות lowercase
+      # עם קווים תחתונים בלבד — זה אילוץ של אנדרואיד.
+      # ההפניה בדשבורד של OneSignal נעשית *בלי* הסיומת: aura_ping
+      - name: Add notification sound (aura_ping)
+        run: |
+          set -e
+          SRC=""
+          for c in sounds/aura_ping.wav aura_ping.wav; do
+            if [ -f "$c" ]; then SRC="$c"; break; fi
+          done
+          if [ -z "$SRC" ]; then echo "ERROR: aura_ping.wav not found in the repo"; exit 1; fi
+          echo "sound source: $SRC"
+          mkdir -p android/app/src/main/res/raw
+          cp "$SRC" android/app/src/main/res/raw/aura_ping.wav
+          ls -l android/app/src/main/res/raw/
+
       - name: Build Debug APK
         run: |
           cd android
