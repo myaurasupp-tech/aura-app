@@ -2,7 +2,6 @@
   "appId": "com.aura.gamer",
   "appName": "AURA",
   "webDir": "www",
-  "bundledWebRuntime": false,
   "server": {
     "url": "https://aura-gamers.netlify.app",
     "cleartext": false,
