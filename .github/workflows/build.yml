@@ -38,80 +38,11 @@ jobs:
       - name: Sync web assets to Android
         run: npx cap sync android
 
-      # ═══════════════════════════════════════════════════════════════════
-      # 🔴 הרשאות מצלמה ומיקרופון.
-      # למה זה כאן ולא בקובץ מרוכז: בכל בנייה `cap add android` יוצר את
-      # תיקיית android/ מאפס, ולכן כל עריכה ידנית נעלמת. זה חייב לרוץ בכל בנייה.
-      # ⚠️ והשלב הזה AFTER `cap sync` בכוונה — sync ממזג הרשאות של תוספים,
-      #    ואנחנו רוצים להיות הכותבים האחרונים.
-      # שני דברים נדרשים, ושניהם חסרו:
-      #   1. הצהרה ב-AndroidManifest.xml
-      #   2. בקשה בזמן ריצה ב-MainActivity — בלי זה אנדרואיד מסרב, גם
-      #      כשההצהרה קיימת, והאתר פשוט לא מקבל הרשאה.
-      # ═══════════════════════════════════════════════════════════════════
-      - name: Patch Android permissions (camera + microphone)
-        run: |
-          set -e
-          MAN=android/app/src/main/AndroidManifest.xml
-
-          if ! grep -q "android.permission.CAMERA" "$MAN"; then
-            sed -i 's~<application~<uses-permission android:name="android.permission.CAMERA" />\n    <uses-permission android:name="android.permission.RECORD_AUDIO" />\n    <uses-permission android:name="android.permission.MODIFY_AUDIO_SETTINGS" />\n\n    <application~' "$MAN"
-            echo "manifest: permissions added"
-          else
-            echo "manifest: already has permissions"
-          fi
-          echo "--- manifest now contains ---"
-          grep -n "uses-permission" "$MAN" || true
-
-          ACT=$(find android/app/src/main/java -name MainActivity.java | head -1)
-          echo "MainActivity path: $ACT"
-          cat > "$ACT" <<'JAVA'
-package com.aura.gamer;
-
-import android.Manifest;
-import android.content.pm.PackageManager;
-import android.os.Build;
-import android.os.Bundle;
-
-import androidx.core.content.ContextCompat;
-
-import com.getcapacitor.BridgeActivity;
-
-/**
- * AURA — Android shell.
- *
- * The WebView shows the LIVE site (capacitor.config.json -> server.url),
- * so every web update reaches the app immediately.
- *
- * Camera and microphone need BOTH of these, and both were missing:
- *   1. a declaration in AndroidManifest.xml (added by the step above)
- *   2. a RUNTIME request -- which is this file. Without it Android refuses,
- *      even when the declaration exists, and the web page gets nothing.
- */
-public class MainActivity extends BridgeActivity {
-    private static final int AURA_AV_PERMISSIONS = 9001;
-
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            boolean needCam = ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA)
-                    != PackageManager.PERMISSION_GRANTED;
-            boolean needMic = ContextCompat.checkSelfPermission(this, Manifest.permission.RECORD_AUDIO)
-                    != PackageManager.PERMISSION_GRANTED;
-
-            if (needCam || needMic) {
-                requestPermissions(new String[] {
-                        Manifest.permission.CAMERA,
-                        Manifest.permission.RECORD_AUDIO
-                }, AURA_AV_PERMISSIONS);
-            }
-        }
-    }
-}
-JAVA
-          echo "MainActivity patched"
+      # הרשאות מצלמה ומיקרופון. הלוגיקה יושבת בקובץ scripts/patch-android.sh
+      # (קובץ אמיתי עדיף על קוד בתוך YAML - אין מלכודות הזחה).
+      # חייב לרוץ אחרי cap add android וגם אחרי cap sync android.
+      - name: Patch camera + microphone permissions
+        run: bash scripts/patch-android.sh
 
       - name: Build Debug APK
         run: |
