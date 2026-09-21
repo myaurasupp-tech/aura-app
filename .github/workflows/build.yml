@@ -19,11 +19,12 @@ jobs:
         with:
           node-version: '20'
 
-      - name: Setup Java 17
+      # Capacitor 7 דורש JDK 21 (לפני כן היה 17)
+      - name: Setup Java 21
         uses: actions/setup-java@v4
         with:
           distribution: 'temurin'
-          java-version: '17'
+          java-version: '21'
 
       - name: Install dependencies
         run: npm install
@@ -38,7 +39,7 @@ jobs:
       - name: Sync web assets to Android
         run: npx cap sync android
 
-      # הרשאות מצלמה ומיקרופון. הלוגיקה יושבת בקובץ scripts/patch-android.sh
+      # הרשאות מצלמה ומיקרופון. הלוגיקה בקובץ scripts/patch-android.sh
       # (קובץ אמיתי עדיף על קוד בתוך YAML - אין מלכודות הזחה).
       # חייב לרוץ אחרי cap add android וגם אחרי cap sync android.
       - name: Patch camera + microphone permissions
