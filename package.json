@@ -1,16 +1,16 @@
 {
   "name": "aura-app",
   "version": "1.0.0",
-  "description": "AURA - Social Gamer App",
+  "description": "AURA - Social App",
   "scripts": {
     "build": "echo build complete"
   },
   "dependencies": {
-    "@capacitor/android": "^6.1.2",
-    "@capacitor/core": "^6.1.2"
+    "@capacitor/android": "^7.0.0",
+    "@capacitor/core": "^7.0.0"
   },
   "devDependencies": {
-    "@capacitor/cli": "^6.1.2",
+    "@capacitor/cli": "^7.0.0",
     "@capacitor/assets": "^3.0.5"
   }
 }
