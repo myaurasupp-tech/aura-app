@@ -3,7 +3,7 @@
   "appName": "AURA",
   "webDir": "www",
   "server": {
-    "url": "https://aura-gamers.netlify.app",
+    "url": "https://myaura.co.il",
     "cleartext": false,
     "androidScheme": "https",
     "errorPath": "index.html"
