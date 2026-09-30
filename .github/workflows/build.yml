@@ -37,13 +37,24 @@ jobs:
       #    ⇒ **אם הוא מותקן — הבילינג עובד** ✓; **אם לא — האפליקציה נבנית כרגיל**
       #    וחוזרת למסלול ביט/Upay ✓✓ (הקוד באתר יודע לזהות את שניהם ✓).
       #    והלוג של הצעד הזה **יאומר בדיוק** מה קרה ✓ (זה מה שנבדוק אחרי הבנייה ✓).
+      #    ⚠️ **והתיקון של 58ל-פה (לקח אמיתי ✓✓):** הגרסה הראשונה התקינה עם
+      #    `--no-save` ✗ — ואז **Capacitor לא ראה את התוסף בכלל** ✗✗, כי הוא קורא
+      #    את רשימת התוספים מ-`package.json` ✗. **התגלית:** אימתתי את ה-AAB
+      #    מבפנים (חיפוש תווים בקובץ ✓) ומצאתי **אפס** מופעים של `billingclient` ✗.
+      #    ⇒ **התיקון:** להצהיר עליו ב-`package.json` — **אבל רק אם ההתקנה הצליחה** ✓✓
+      #    (כך שגם אם npm ייכשל, הבנייה **לא** נשברת ✗, והתוסף פשוט לא ייכנס ✓).
       - name: 🤖 Billing plugin (best effort - the app degrades gracefully without it)
         continue-on-error: true
         run: |
-          npm install cordova-plugin-purchase --no-save
-          echo "--- what we got ---"
+          npm install cordova-plugin-purchase --no-save || true
           if npm ls cordova-plugin-purchase 2>/dev/null | grep -q cordova-plugin-purchase; then
-            echo "BILLING PLUGIN: INSTALLED ✓ (Google Play billing will be active in the APK)"
+            VER=$(node -p "require('./node_modules/cordova-plugin-purchase/package.json').version" 2>/dev/null || echo '*')
+            echo "installed version: $VER"
+            # ⚠️ **ההצהרה היא מה שגורם ל-`cap sync` לזהות אותו** ✓✓
+            node -e "const fs=require('fs');const p=JSON.parse(fs.readFileSync('package.json','utf8'));p.dependencies=p.dependencies||{};p.dependencies['cordova-plugin-purchase']='^'+process.argv[1];fs.writeFileSync('package.json',JSON.stringify(p,null,2)+'\\n');" "$VER"
+            echo "--- package.json dependencies now ---"
+            node -p "JSON.stringify(require('./package.json').dependencies,null,1)"
+            echo "BILLING PLUGIN: INSTALLED + DECLARED ✓ (Google Play billing will be active in the APK/AAB)"
           else
             echo "BILLING PLUGIN: NOT installed ✗ — the app stays on Bit/Upay (safe fallback, nothing breaks)"
           fi
