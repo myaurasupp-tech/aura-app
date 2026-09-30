@@ -30,6 +30,24 @@ jobs:
       - name: Install dependencies
         run: npm install
 
+      # 🤖 **58ל-פד — תוסף התשלומים של גוגל** ✓✓ — **"מאמץ סביר" ולא חובה** ✗✓.
+      #    **למה ככה:** לתוסף יש סיכון התקנה ✗ (גרסה, תאימות), ואסור שזה **ישבור
+      #    את הבנייה של ה-APK/AAB** ✗✗ — הרי ה-AAB הוא מה שפותח את 14 הימים ✓✓.
+      #    ⇒ `--no-save` (לא נוגע ב-package.json ✓) + `continue-on-error` ✓
+      #    ⇒ **אם הוא מותקן — הבילינג עובד** ✓; **אם לא — האפליקציה נבנית כרגיל**
+      #    וחוזרת למסלול ביט/Upay ✓✓ (הקוד באתר יודע לזהות את שניהם ✓).
+      #    והלוג של הצעד הזה **יאומר בדיוק** מה קרה ✓ (זה מה שנבדוק אחרי הבנייה ✓).
+      - name: 🤖 Billing plugin (best effort - the app degrades gracefully without it)
+        continue-on-error: true
+        run: |
+          npm install cordova-plugin-purchase --no-save
+          echo "--- what we got ---"
+          if npm ls cordova-plugin-purchase 2>/dev/null | grep -q cordova-plugin-purchase; then
+            echo "BILLING PLUGIN: INSTALLED ✓ (Google Play billing will be active in the APK)"
+          else
+            echo "BILLING PLUGIN: NOT installed ✗ — the app stays on Bit/Upay (safe fallback, nothing breaks)"
+          fi
+
       - name: Add Android platform
         run: npx cap add android
 
@@ -103,6 +121,32 @@ jobs:
           echo "keystore alias: $ALIAS"
           echo "AURA_ALIAS=$ALIAS" >> "$GITHUB_ENV"
 
+      # 🔢 **versionCode עולה בכל בנייה** ✗✓ — גוגל פליי **דוחה** העלאה שנייה עם אותו
+      #    versionCode ✗ (ברירת המחדל של Capacitor היא **1** ✗). לכן הוא נגזר ממספר
+      #    הריצה של ה-CI ✓ ⇒ **תמיד עולה** ✓, ותמיד גבוה ממה שהופץ קודם ✓✓.
+      #    ⚠️ זה נדרש **בנוסף** ל-AAB: בלעדיו ההעלאה השנייה לפליי נכשלת ✗.
+      - name: Bump versionCode / versionName
+        run: |
+          set -e
+          GRADLE=android/app/build.gradle
+          if [ ! -f "$GRADLE" ]; then echo "ERROR: $GRADLE not found"; exit 1; fi
+          CODE=$((1000 + GITHUB_RUN_NUMBER))
+          NAME="1.0.${GITHUB_RUN_NUMBER}"
+          sed -i -E "s/^(\s*versionCode )[0-9]+/\1${CODE}/" "$GRADLE"
+          sed -i -E "s/^(\s*versionName )\"[^\"]*\"/\1\"${NAME}\"/" "$GRADLE"
+          echo "--- version now in gradle ---"
+          grep -nE "versionCode|versionName|applicationId" "$GRADLE"
+          # 🛡️ **וכשל כאן ולא בפליי** ✗✓: אם ה-sed לא תפס (למשל אם טמפלייט של
+          #    Capacitor ישתנה בעתיד ✗) — עדיף שהבנייה **תיפול מיד** ✓ מאשר
+          #    שנתגלה את זה ב**העלאה השנייה** לפליי, שם זה נכשל בסירוב ✗✗.
+          if ! grep -qE "versionCode[[:space:]]+${CODE}[[:space:]]*$" "$GRADLE"; then
+            echo "ERROR: versionCode was NOT set to ${CODE} - aborting"; exit 1
+          fi
+          if ! grep -qE "versionName[[:space:]]+\"${NAME}\"" "$GRADLE"; then
+            echo "ERROR: versionName was NOT set to ${NAME} - aborting"; exit 1
+          fi
+          echo "version OK: code=${CODE} name=${NAME}"
+
       # 📦 בונים release לא חתום, ומחתימים ידנית עם apksigner.
       #    למה לא signingConfigs בתוך Gradle: תיקיית android/ נבנית מאפס בכל
       #    בנייה, וזו דרך עם פחות הזחות ופחות סיכוי לשבור את build.gradle.
@@ -130,9 +174,32 @@ jobs:
           "$BT/apksigner" verify --print-certs AURA-release.apk
           ls -l AURA-release.apk
 
-      - name: Upload APK
+          # ── 📦 AAB (Android App Bundle) — **זה מה שגוגל פליי דורשת להפצה** ✗✓ ──
+          #    למה זה נוסף: עד כאן ה-CI בנה **APK בלבד** ✗ — וגוגל **לא מקבלת APK
+          #    להפצה** ✗✓ (רק ל-AAB). ה-AAB הוא **אותו קוד** ✓, באריזה שגוגל
+          #    מפרקת ל-APK מותאם לכל מכשיר ✓✓.
+          #    ⚠️ **ואי אפשר לחתום אותו ב-apksigner** ✗✓ — זו חתימת APK ✗; AAB
+          #    נחתם ב-**jarsigner** ✓ (מגיע עם ה-JDK שכבר כאן ✓).
+          #    ⚠️ ו-Gradle: `bundleRelease` ולא `assembleRelease` ✓.
+          ./gradlew bundleRelease --no-daemon
+          AAB=app/build/outputs/bundle/release/app-release.aab
+          echo "--- bundle output ---"
+          ls -l "$AAB"
+          jarsigner -keystore "$RUNNER_TEMP/aura-release.p12" -storetype PKCS12 \
+            -storepass "$KEYSTORE_PASSWORD" \
+            -digestalg SHA-256 -sigalg SHA256withRSA \
+            -signedjar AURA-release.aab "$AAB" "$AURA_ALIAS"
+          echo "--- AAB signature (the proof) ---"
+          jarsigner -verify AURA-release.aab | tail -2
+          ls -l AURA-release.aab
+
+      # 📦 **שני הקבצים, ובכוונה** ✓✓: ה-**AAB** הוא מה שנשלח לגוגל פליי ✗✓,
+      #    וה-**APK** נשאר למי שמתקין ישירות מהאתר ✓ (הערוץ שקיים ועובד ✓).
+      - name: Upload APK + AAB
         uses: actions/upload-artifact@v4
         with:
-          name: AURA-APK
-          path: android/AURA-release.apk
+          name: AURA-build
+          path: |
+            android/AURA-release.apk
+            android/AURA-release.aab
           retention-days: 30
