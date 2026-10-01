@@ -67,18 +67,27 @@ jobs:
       #    „Your app currently targets API level 35 and must target at least API level 36” ✗✓.
       #    ⇒ מעדכנים את `android/variables.gradle` (שני השדות ✓) — **זה כל התיקון** ✓.
       #    🛡️ **וכשל כאן** ✗✓: אם ה-sed לא תופס — הבנייה נופלת מיד ✓ ולא מגלים את זה בפליי ✓.
-      - name: 🎯 Target SDK 36 (Play requires it)
+      #
+      # 📱 **58ל-צט — minSdk 24** ✗✓: **נמדד בשטח** (העלאת ה-AAB ל-Internal testing ✗):
+      #    „Play automatic protection requires a minimum SDK version of 24 or higher.
+      #     The uploaded App Bundle has a minimum SDK version of 23” ✗✗ — ו**הלחצן Next
+      #    לא היה לוחץ** ✗✓ (כלומר זו חסימה, לא הערה ✓). 23 הוא ברירת המחדל של
+      #    Capacitor 7 ✗. ⇒ **ההשפעה היחידה:** אנדרואיד 6 בלבד לא יותקן ✓ (זניח ✓),
+      #    והתוסף של Play דורש 23 ומעלה ⇒ **24 בטוח לחלוטין** ✓✓.
+      - name: 🎯 Target SDK 36 + minSdk 24 (Play requires both)
         run: |
           set -e
           V=android/variables.gradle
           if [ ! -f "$V" ]; then echo "ERROR: $V not found"; exit 1; fi
           sed -i -E 's/targetSdkVersion *= *[0-9]+/targetSdkVersion = 36/' "$V"
           sed -i -E 's/compileSdkVersion *= *[0-9]+/compileSdkVersion = 36/' "$V"
+          sed -i -E 's/minSdkVersion *= *[0-9]+/minSdkVersion = 24/' "$V"
           echo "--- android/variables.gradle now ---"
           grep -nE 'SdkVersion' "$V"
           grep -qE 'targetSdkVersion *= *36' "$V" || { echo "ERROR: targetSdkVersion was NOT set to 36 - aborting"; exit 1; }
           grep -qE 'compileSdkVersion *= *36' "$V" || { echo "ERROR: compileSdkVersion was NOT set to 36 - aborting"; exit 1; }
-          echo "target SDK OK: 36"
+          grep -qE 'minSdkVersion *= *24' "$V" || { echo "ERROR: minSdkVersion was NOT set to 24 - aborting"; exit 1; }
+          echo "SDK levels OK: target/compile 36, min 24"
 
       - name: Generate app icon
         run: npx capacitor-assets generate --android || echo "Icon generation skipped"
